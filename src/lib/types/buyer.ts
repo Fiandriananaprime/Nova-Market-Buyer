@@ -7,7 +7,28 @@ export type Address = {
   district: string;
   city: string;
   region: string;
+  postalCode?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  instructions?: string | null;
   isDefault: boolean;
+};
+export type BuyerProfile = import('./account').User & BuyerPreferences;
+export type PaymentMethod = {
+  id: string;
+  type: string;
+  label: string;
+  last4?: string;
+  isDefault: boolean;
+};
+export type BuyerPreferences = {
+  language?: 'mg' | 'fr' | 'en';
+  theme?: 'light' | 'dark' | 'system';
+  notifications?: Record<string, boolean>;
+};
+export type FavoriteToggleResponse = {
+  productId: string;
+  isFavorite: boolean;
 };
 export type CartItem = {
   id?: string;

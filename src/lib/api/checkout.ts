@@ -4,7 +4,7 @@ export const checkoutApi = {
   createOrder: (body: unknown) =>
     request<Order[]>('/checkout', {
       method: 'POST',
-      body: JSON.stringify(body),
+      data: body,
     }),
   orders: () => request<{ data: Order[] }>('/orders'),
   order: (id: string) => request<Order>(`/orders/${encodeURIComponent(id)}`),

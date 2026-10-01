@@ -248,7 +248,9 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
       buyerApi
         .favorites()
         .then((items) => setFavorites(items.map((item) => item.id))),
-      buyerApi.followedStores().then(setFollowed),
+      buyerApi
+        .followedStores()
+        .then((items) => setFollowed(items.map((store) => store.id))),
       checkoutApi.orders().then((value) => setOrders(value.data)),
       accountApi.notifications().then((value) => setNotifications(value.data)),
     ]).catch((error: unknown) =>

@@ -1,4 +1,5 @@
 import { request } from './client';
+import type { AuthMe, AuthRefreshResponse, User } from '../types';
 export const authApi = {
   register: (body: {
     firstName: string;
@@ -7,26 +8,26 @@ export const authApi = {
     email?: string;
     phone?: string;
   }) =>
-    request('/auth/register', { method: 'POST', body: JSON.stringify(body) }),
+    request<User>('/auth/register', { method: 'POST', data: body }),
   login: (body: { email: string; password: string; remember?: boolean }) =>
-    request('/auth/login', { method: 'POST', body: JSON.stringify(body) }),
+    request<User>('/auth/login', { method: 'POST', data: body }),
   logout: () => request<void>('/auth/logout', { method: 'POST' }),
-  refresh: () => request('/auth/refresh', { method: 'POST' }),
+  refresh: () => request<AuthRefreshResponse>('/auth/refresh', { method: 'POST' }),
   forgotPassword: (identifier: string) =>
     request('/auth/forgot-password', {
       method: 'POST',
-      body: JSON.stringify({ identifier }),
+      data: { identifier },
     }),
   verifyEmail: (code: string) =>
     request('/auth/email/verify', {
       method: 'POST',
-      body: JSON.stringify({ code }),
+      data: { code },
     }),
   verifyPhone: (code: string) =>
     request('/auth/phone/verify', {
       method: 'POST',
-      body: JSON.stringify({ code }),
+      data: { code },
     }),
-  me: () => request('/auth/me'),
+  me: () => request<AuthMe>('/auth/me'),
 };
 export default authApi;

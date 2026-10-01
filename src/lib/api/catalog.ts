@@ -34,9 +34,9 @@ export const catalogApi = {
       `/stores/${encodeId(id)}/reviews${queryString(query)}`,
     ),
   followStore: (id: string) =>
-    request<void>(`/stores/${encodeId(id)}/follow`, { method: 'POST' }),
+    request(`/stores/${encodeId(id)}/follow`, { method: 'POST' }),
   unfollowStore: (id: string) =>
-    request<void>(`/stores/${encodeId(id)}/follow`, { method: 'DELETE' }),
+    request(`/stores/${encodeId(id)}/follow`, { method: 'DELETE' }),
 };
 export { unwrap };
 export default catalogApi;

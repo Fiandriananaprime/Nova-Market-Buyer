@@ -1,26 +1,32 @@
 import { encodeId, request } from './client';
-import type { Cart, Notification } from '../types';
+import type {
+  Cart,
+  NotificationPage,
+  SecuritySettings,
+  Session,
+  User,
+} from '../types';
 export const accountApi = {
-  profile: () => request('/account/profile'),
-  updateProfile: (body: unknown) =>
+  profile: () => request<User>('/account/profile'),
+  updateProfile: (body: Partial<User>) =>
     request('/account/profile', {
       method: 'PATCH',
-      body: JSON.stringify(body),
+      data: body,
     }),
-  security: () => request('/account/security'),
-  sessions: () => request('/account/sessions'),
+  security: () => request<SecuritySettings>('/account/security'),
+  sessions: () => request<Session[]>('/account/sessions'),
   notifications: (page = 1, limit = 20) =>
-    request<{ data: Notification[] }>(
+    request<NotificationPage>(
       `/account/notifications?page=${page}&limit=${limit}`,
     ),
   markNotificationRead: (id: string) =>
-    request<void>(`/account/notifications/${encodeId(id)}/read`, {
+    request(`/account/notifications/${encodeId(id)}/read`, {
       method: 'PATCH',
     }),
   markAllNotificationsRead: () =>
-    request<void>('/account/notifications/read-all', { method: 'POST' }),
+    request('/account/notifications/read-all', { method: 'POST' }),
   deleteNotification: (id: string) =>
-    request<void>(`/account/notifications/${encodeId(id)}`, {
+    request(`/account/notifications/${encodeId(id)}`, {
       method: 'DELETE',
     }),
 };
@@ -29,15 +35,15 @@ export const cartApi = {
   addItem: (body: { productId: string; qty: number }) =>
     request<Cart>('/cart/items', {
       method: 'POST',
-      body: JSON.stringify(body),
+      data: body,
     }),
   updateItem: (id: string, body: { qty: number }) =>
     request<Cart>(`/cart/items/${encodeId(id)}`, {
       method: 'PATCH',
-      body: JSON.stringify(body),
+      data: body,
     }),
   removeItem: (id: string) =>
     request<Cart>(`/cart/items/${encodeId(id)}`, { method: 'DELETE' }),
-  clear: () => request<void>('/cart', { method: 'DELETE' }),
+  clear: () => request('/cart', { method: 'DELETE' }),
 };
 export default accountApi;
