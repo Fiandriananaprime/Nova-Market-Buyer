@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom"
-import { ArrowRight, LockKeyhole, ShieldCheck, UserRound } from "lucide-react"
-import * as UI from "../../lib/ui"
-import { Button, Field, useShop } from "../../components/shared"
+import { Link } from 'react-router-dom';
+import { ArrowRight, LockKeyhole, ShieldCheck, UserRound } from 'lucide-react';
+import * as UI from '../../lib/ui';
+import { Button, Field, useShop } from '../../components/shared';
 export const SecurityPage = () => {
-  const { notify } = useShop()
+  const { notify } = useShop();
   return (
     <div className="settings-panel">
       <UI.H2>Sécurité du compte</UI.H2>
@@ -27,7 +27,7 @@ export const SecurityPage = () => {
         <Button
           variant="outline"
           onClick={() =>
-            notify("La 2FA sera disponible avec votre compte connecté")
+            notify('La 2FA sera disponible avec votre compte connecté')
           }
         >
           Configurer
@@ -42,7 +42,7 @@ export const SecurityPage = () => {
         <Button
           variant="outline"
           onClick={() =>
-            notify("Les sessions seront disponibles avec votre compte connecté")
+            notify('Les sessions seront disponibles avec votre compte connecté')
           }
         >
           Voir les sessions
@@ -51,8 +51,8 @@ export const SecurityPage = () => {
       <UI.H3>Changer de mot de passe</UI.H3>
       <form
         onSubmit={(e) => {
-          e.preventDefault()
-          notify("La mise à jour du mot de passe nécessite un compte connecté")
+          e.preventDefault();
+          notify('La mise à jour du mot de passe nécessite un compte connecté');
         }}
       >
         <Field label="Mot de passe actuel" type="password" required />
@@ -65,5 +65,5 @@ export const SecurityPage = () => {
         <Button type="submit">Mettre à jour</Button>
       </form>
     </div>
-  )
-}
+  );
+};

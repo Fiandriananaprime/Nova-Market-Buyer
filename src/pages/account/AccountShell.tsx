@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router-dom"
+import { NavLink, Outlet } from 'react-router-dom';
 import {
   ChevronRight,
   CreditCard,
@@ -8,18 +8,18 @@ import {
   Settings2,
   ShieldCheck,
   UserRound,
-} from "lucide-react"
-import { PageTitle } from "../../components/shared"
+} from 'lucide-react';
+import { PageTitle } from '../../components/shared';
 
 const accountNav = [
-  { title: "Vue d'ensemble", path: "/account", icon: LayoutGrid },
-  { title: "Mon profil", path: "/account/profile", icon: UserRound },
-  { title: "Mes adresses", path: "/account/addresses", icon: MapPin },
-  { title: "Moyens de paiement", path: "/account/payments", icon: CreditCard },
-  { title: "Préférences", path: "/account/preferences", icon: Settings2 },
-  { title: "Sécurité", path: "/account/security", icon: LockKeyhole },
-  { title: "Confidentialité", path: "/account/privacy", icon: ShieldCheck },
-]
+  { title: "Vue d'ensemble", path: '/account', icon: LayoutGrid },
+  { title: 'Mon profil', path: '/account/profile', icon: UserRound },
+  { title: 'Mes adresses', path: '/account/addresses', icon: MapPin },
+  { title: 'Moyens de paiement', path: '/account/payments', icon: CreditCard },
+  { title: 'Préférences', path: '/account/preferences', icon: Settings2 },
+  { title: 'Sécurité', path: '/account/security', icon: LockKeyhole },
+  { title: 'Confidentialité', path: '/account/privacy', icon: ShieldCheck },
+];
 
 export const AccountShell = () => {
   return (
@@ -40,7 +40,7 @@ export const AccountShell = () => {
           </div>
           <nav>
             {accountNav.map(({ title, path, icon: Icon }) => (
-              <NavLink key={path} to={path} end={path === "/account"}>
+              <NavLink key={path} to={path} end={path === '/account'}>
                 <Icon size={18} />
                 {title}
                 <ChevronRight size={16} />
@@ -53,5 +53,5 @@ export const AccountShell = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

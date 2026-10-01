@@ -1,40 +1,40 @@
-import { useState } from "react"
-import type { FormEvent } from "react"
-import { MapPin, Plus, X } from "lucide-react"
-import type { Address } from "../../lib/mock"
-import * as UI from "../../lib/ui"
-import { Button, Field, useShop } from "../../components/shared"
+import { useState } from 'react';
+import type { FormEvent } from 'react';
+import { MapPin, Plus, X } from 'lucide-react';
+import type { Address } from '../../lib/types';
+import * as UI from '../../lib/ui';
+import { Button, Field, useShop } from '../../components/shared';
 export const AddressesPage = () => {
-  const { addresses, setAddresses, notify } = useShop()
-  const [adding, setAdding] = useState(false)
-  const [editing, setEditing] = useState<Address | null>(null)
-  const [form, setForm] = useState<Partial<Address>>({})
+  const { addresses, setAddresses, notify } = useShop();
+  const [adding, setAdding] = useState(false);
+  const [editing, setEditing] = useState<Address | null>(null);
+  const [form, setForm] = useState<Partial<Address>>({});
   const start = (a?: Address) => {
-    setEditing(a || null)
-    setForm(a || {})
-    setAdding(true)
-  }
+    setEditing(a || null);
+    setForm(a || {});
+    setAdding(true);
+  };
   const save = (e: FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     const address = {
       id: editing?.id || `a${Date.now()}`,
-      label: form.label || "Maison",
-      recipientName: form.recipientName || "",
-      phone: form.phone || "",
-      street: form.street || "",
-      district: form.district || "",
-      city: form.city || "",
-      region: form.region || "",
+      label: form.label || 'Maison',
+      recipientName: form.recipientName || '',
+      phone: form.phone || '',
+      street: form.street || '',
+      district: form.district || '',
+      city: form.city || '',
+      region: form.region || '',
       isDefault: editing?.isDefault || addresses.length === 0,
-    }
+    };
     setAddresses((old) =>
       editing
         ? old.map((a) => (a.id === editing.id ? address : a))
         : [...old, address],
-    )
-    setAdding(false)
-    notify("Adresse enregistrée en mode démo")
-  }
+    );
+    setAdding(false);
+    notify('Adresse enregistrée en mode démo');
+  };
   return (
     <div className="settings-panel">
       <div className="panel-heading">
@@ -62,8 +62,8 @@ export const AddressesPage = () => {
               <UI.Button onClick={() => start(a)}>Modifier</UI.Button>
               <UI.Button
                 onClick={() => {
-                  setAddresses((old) => old.filter((x) => x.id !== a.id))
-                  notify("Adresse supprimée")
+                  setAddresses((old) => old.filter((x) => x.id !== a.id));
+                  notify('Adresse supprimée');
                 }}
               >
                 Supprimer
@@ -101,21 +101,21 @@ export const AddressesPage = () => {
             >
               <X />
             </UI.Button>
-            <UI.H2>{editing ? "Modifier l'adresse" : "Nouvelle adresse"}</UI.H2>
+            <UI.H2>{editing ? "Modifier l'adresse" : 'Nouvelle adresse'}</UI.H2>
             <div className="form-grid">
               {[
-                ["label", "Nom de l'adresse"],
-                ["recipientName", "Nom du destinataire"],
-                ["phone", "Téléphone"],
-                ["street", "Rue et numéro"],
-                ["district", "Quartier"],
-                ["city", "Ville"],
-                ["region", "Région"],
+                ['label', "Nom de l'adresse"],
+                ['recipientName', 'Nom du destinataire'],
+                ['phone', 'Téléphone'],
+                ['street', 'Rue et numéro'],
+                ['district', 'Quartier'],
+                ['city', 'Ville'],
+                ['region', 'Région'],
               ].map(([key, label]) => (
                 <Field
                   key={key}
                   label={label}
-                  value={String(form[(key as keyof Address)] || "")}
+                  value={String(form[key as keyof Address] || '')}
                   onChange={(e) =>
                     setForm((old) => ({ ...old, [key]: e.target.value }))
                   }
@@ -128,5 +128,5 @@ export const AddressesPage = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};

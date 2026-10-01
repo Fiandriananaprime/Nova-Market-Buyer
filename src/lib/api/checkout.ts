@@ -1,9 +1,16 @@
-import { request } from "./client"
+import { request } from './client';
+import type { Order } from '../types';
 export const checkoutApi = {
-  preview: (body: unknown) => request("/buyer/checkout/preview", { method: "POST", body: JSON.stringify(body) }),
-  createOrder: (body: unknown) => request("/buyer/orders", { method: "POST", body: JSON.stringify(body) }),
-  orders: () => request("/buyer/orders"),
-  order: (id: string) => request(`/buyer/orders/${encodeURIComponent(id)}`),
-  cancelOrder: (id: string) => request(`/buyer/orders/${encodeURIComponent(id)}/cancel`, { method: "POST" }),
-}
-export default checkoutApi
+  createOrder: (body: unknown) =>
+    request<Order[]>('/checkout', {
+      method: 'POST',
+      data: body,
+    }),
+  orders: () => request<{ data: Order[] }>('/orders'),
+  order: (id: string) => request<Order>(`/orders/${encodeURIComponent(id)}`),
+  cancelOrder: (id: string) =>
+    request<Order>(`/orders/${encodeURIComponent(id)}/cancel`, {
+      method: 'POST',
+    }),
+};
+export default checkoutApi;

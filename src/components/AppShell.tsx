@@ -1,16 +1,28 @@
-import { useState } from "react"
-import { Link, NavLink, Outlet } from "react-router-dom"
-import { ArrowRight, Bell, CircleCheck, Heart, Home, MapPin, Menu, Search, ShoppingBag, Sparkles, UserRound } from "lucide-react"
-import * as UI from "../lib/ui"
-import logo from "../imports/LargeNova.png"
-import signature from "../imports/NovaSign.png"
-import { useShop } from "./shared"
-import type { LucideIcon } from "lucide-react"
+import { useState } from 'react';
+import { Link, NavLink, Outlet } from 'react-router-dom';
+import {
+  ArrowRight,
+  Bell,
+  CircleCheck,
+  Heart,
+  Home,
+  MapPin,
+  Menu,
+  Search,
+  ShoppingBag,
+  Sparkles,
+  UserRound,
+} from 'lucide-react';
+import * as UI from '../lib/ui';
+import logo from '../imports/LargeNova.png';
+import signature from '../imports/NovaSign.png';
+import { useShop } from './shared';
+import type { LucideIcon } from 'lucide-react';
 export const AppShell = () => {
-  const { cart, favorites, notifications, toast } = useShop()
-  const count = Object.values(cart).reduce((a, b) => a + b, 0)
-  const unread = notifications.filter((n) => !n.read).length
-  const [mobileMenu, setMobileMenu] = useState(false)
+  const { cart, favorites, notifications, toast } = useShop();
+  const count = Object.values(cart).reduce((a, b) => a + b, 0);
+  const unread = notifications.filter((n) => !n.read).length;
+  const [mobileMenu, setMobileMenu] = useState(false);
   return (
     <div className="app-shell">
       <div className="announcement">
@@ -45,7 +57,7 @@ export const AppShell = () => {
             >
               <Heart
                 size={21}
-                fill={favorites.length ? "currentColor" : "none"}
+                fill={favorites.length ? 'currentColor' : 'none'}
               />
             </Link>
             <Link
@@ -81,12 +93,12 @@ export const AppShell = () => {
       {mobileMenu && (
         <nav className="mobile-menu container">
           {[
-            ["Accueil", "/"],
-            ["Explorer", "/explore"],
-            ["Catégories", "/categories"],
-            ["Boutiques", "/stores"],
-            ["Commandes", "/orders"],
-            ["Notifications", "/notifications"],
+            ['Accueil', '/'],
+            ['Explorer', '/explore'],
+            ['Catégories', '/categories'],
+            ['Boutiques', '/stores'],
+            ['Commandes', '/orders'],
+            ['Notifications', '/notifications'],
           ].map(([label, path]) => (
             <Link onClick={() => setMobileMenu(false)} key={path} to={path}>
               {label}
@@ -141,24 +153,24 @@ export const AppShell = () => {
       </footer>
       <nav className="bottom-nav" aria-label="Navigation mobile">
         {[
-          [Home, "Accueil", "/"],
-          [Search, "Explorer", "/explore"],
-          [Heart, "Favoris", "/favorites"],
-          [ShoppingBag, "Panier", "/cart"],
-          [UserRound, "Compte", "/account"],
+          [Home, 'Accueil', '/'],
+          [Search, 'Explorer', '/explore'],
+          [Heart, 'Favoris', '/favorites'],
+          [ShoppingBag, 'Panier', '/cart'],
+          [UserRound, 'Compte', '/account'],
         ].map(([Icon, label, path]) => {
-          const I = Icon as LucideIcon
+          const I = Icon as LucideIcon;
           return (
             <NavLink
               key={path as string}
               to={path as string}
-              end={path === "/"}
+              end={path === '/'}
             >
               <I size={21} />
               <span>{label as string}</span>
-              {path === "/cart" && count > 0 && <i>{count}</i>}
+              {path === '/cart' && count > 0 && <i>{count}</i>}
             </NavLink>
-          )
+          );
         })}
       </nav>
       {toast && (
@@ -168,5 +180,5 @@ export const AppShell = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};

@@ -1,5 +1,5 @@
-import { Search } from "lucide-react"
-import { Empty } from "../../components/shared"
+import { Search } from 'lucide-react';
+import { Empty } from '../../components/shared';
 export const NotFound = () => {
   return (
     <div className="container page">
@@ -11,5 +11,5 @@ export const NotFound = () => {
         action="Retour à l'accueil"
       />
     </div>
-  )
-}
+  );
+};

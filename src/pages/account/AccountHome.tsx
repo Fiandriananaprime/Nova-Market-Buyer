@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom"
-import { ArrowRight, Heart, MapPin, Package, ShieldCheck } from "lucide-react"
-import * as UI from "../../lib/ui"
+import { Link } from 'react-router-dom';
+import { ArrowRight, Heart, MapPin, Package, ShieldCheck } from 'lucide-react';
+import * as UI from '../../lib/ui';
 export const AccountHome = () => {
   return (
     <>
@@ -35,5 +35,5 @@ export const AccountHome = () => {
         </Link>
       </div>
     </>
-  )
-}
+  );
+};

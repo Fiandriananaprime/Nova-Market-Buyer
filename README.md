@@ -69,6 +69,7 @@ npm run dev
 npm run build
 ```
 
-Le projet utilise actuellement des données de démonstration locales. Les
-services backend pourront être branchés ultérieurement lorsque l'API
-NovaMarket sera disponible.
+L'application consomme l'API NovaMarket via `VITE_API_URL`. Copiez
+`.env.example` vers `.env` et renseignez l'URL de l'API avant de démarrer
+l'application. Les données affichées proviennent des services backend, et non
+de données de démonstration locales.
