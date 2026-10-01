@@ -3,6 +3,21 @@
   "private": true,
   "version": "2.0.0",
   "type": "module",
+   "keywords": [
+    "novamarket",
+    "ecommerce",
+    "buyer",
+    "frontend",
+    "react",
+    "typescript"
+  ],
+  "author": "FiandriananaPrime",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Fiandriananaprime/Nova-Market-Buyer.git"
+  },
+  "homepage": "https://github.com/Fiandriananaprime/Nova-Market-Buyer",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
