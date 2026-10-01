@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { ArrowLeft, ArrowRight } from "lucide-react"
-import { imagery } from "../../lib/mock"
 import * as UI from "../../lib/ui"
 import logo from "../../imports/LargeNova.png"
 import { Button, Field, useShop } from "../../components/shared"
@@ -24,7 +23,7 @@ export const AuthPage = ({
   return (
     <div className="auth-layout">
       <div className="auth-art">
-        <img src={imagery.hero} alt="Création artisanale" />
+        <img src={logo} alt="NovaMarket" />
         <div>
           <span className="eyebrow">NOVA MARKETPLACE</span>
           <UI.H2>Votre prochaine découverte commence ici.</UI.H2>

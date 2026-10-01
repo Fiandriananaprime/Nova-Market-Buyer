@@ -1,10 +1,9 @@
 import { useState } from "react"
 import { Heart, Store as StoreIcon } from "lucide-react"
-import { products, stores } from "../../lib/mock"
 import * as UI from "../../lib/ui"
 import { PageTitle, Empty, useShop, ProductGrid, StoreCard } from "../../components/shared"
 export const FavoritesPage = () => {
-  const { favorites, followed } = useShop()
+  const { favorites, followed, products, stores } = useShop()
   const [tab, setTab] = useState("Produits")
   return (
     <div className="container page">

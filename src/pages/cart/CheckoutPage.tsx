@@ -2,12 +2,12 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { ArrowLeft, ArrowRight, Check, CreditCard, LockKeyhole, MapPin, Plus, ShoppingBag, Sparkles, Store as StoreIcon, Truck, Wallet } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
-import { money, products } from "../../lib/mock"
-import type { Order } from "../../lib/mock"
+import { checkoutApi } from "../../lib/api/checkout"
+import { money } from "../../lib/format"
 import * as UI from "../../lib/ui"
 import { Button, Field, PageTitle, Empty, useShop } from "../../components/shared"
 export const CheckoutPage = () => {
-  const { cart, addresses, place } = useShop()
+  const { cartItems: items, addresses } = useShop()
   const navigate = useNavigate()
   const [step, setStep] = useState(0)
   const [addressId, setAddressId] = useState(
@@ -18,8 +18,7 @@ export const CheckoutPage = () => {
   const [phone, setPhone] = useState("")
   const [note, setNote] = useState("")
   const [error, setError] = useState("")
-  const items = products.filter((p) => cart[p.id])
-  const subtotal = items.reduce((sum, p) => sum + p.price * cart[p.id], 0)
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.qty, 0)
   const fee = delivery === "express" ? 20000 : delivery === "pickup" ? 0 : 12000
   const address = addresses.find((a) => a.id === addressId)
   const steps = ["Adresse", "Livraison", "Paiement", "Confirmation"]
@@ -47,31 +46,13 @@ export const CheckoutPage = () => {
       setError("Une adresse est nécessaire pour cette livraison.")
       return
     }
-    const now = new Date()
-    const order: Order = {
-      id: `ORD-${now.getFullYear()}-${String(Date.now()).slice(-6)}`,
-      items: items.map((p) => ({
-        productId: p.id,
-        productName: p.name,
-        image: p.images,
-        price: p.price,
-        qty: cart[p.id],
-        sellerName: p.storeName,
-      })),
-      subtotal,
-      deliveryFee: fee,
-      total: subtotal + fee,
-      status: "pending",
+    void checkoutApi.createOrder({
+      addressId: address?.id,
       deliveryMethod: delivery,
       paymentMethod: payment,
-      paymentStatus: "pending",
+      paymentPhoneNumber: phone.trim() || undefined,
       note: note.trim() || undefined,
-      address: address || addresses[0],
-      createdAt: now.toISOString(),
-      estimatedDelivery: new Date(now.getTime() + 4 * 86400000).toISOString(),
-    }
-    place(order)
-    navigate(`/orders/${order.id}`)
+    }).then((orders) => navigate(`/orders/${orders[0]?.id || ""}`))
   }
   if (!items.length)
     return (
@@ -226,16 +207,16 @@ export const CheckoutPage = () => {
               <p>Vérifiez les détails de votre commande avant de confirmer.</p>
               <div className="checkout-recap">
                 <UI.H3>Votre sélection</UI.H3>
-                {items.map((p) => (
-                  <div key={p.id}>
-                    <img src={p.images} alt="" />
+                {items.map((item) => (
+                  <div key={item.id ?? item.productId}>
+                    <img src={item.image} alt="" />
                     <span>
-                      {p.name}
+                      {item.productName}
                       <small>
-                        {p.storeName} · Quantité {cart[p.id]}
+                        {item.sellerName} · Quantité {item.qty}
                       </small>
                     </span>
-                    <strong>{money(p.price * cart[p.id])}</strong>
+                    <strong>{money(item.price * item.qty)}</strong>
                   </div>
                 ))}
               </div>
@@ -295,12 +276,12 @@ export const CheckoutPage = () => {
         </div>
         <aside className="summary-card">
           <UI.H2>Votre commande</UI.H2>
-          {items.map((p) => (
-            <div key={p.id}>
+          {items.map((item) => (
+            <div key={item.id ?? item.productId}>
               <span>
-                {p.name} × {cart[p.id]}
+                {item.productName} × {item.qty}
               </span>
-              <strong>{money(p.price * cart[p.id])}</strong>
+              <strong>{money(item.price * item.qty)}</strong>
             </div>
           ))}
           <div>

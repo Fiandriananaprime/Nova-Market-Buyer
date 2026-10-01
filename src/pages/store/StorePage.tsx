@@ -1,12 +1,22 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { ArrowRight, Check, MapPin, Plus, ShieldCheck } from "lucide-react"
-import { products, stores } from "../../lib/mock"
+import { catalogApi } from "../../lib/api/catalog"
+import type { Product } from "../../lib/types"
 import * as UI from "../../lib/ui"
 import { Button, SectionTitle, Stars, Empty, Skeleton, useShop, ProductCard, CursorList, Reviews } from "../../components/shared"
 export const StorePage = () => {
   const { id } = useParams()
-  const store = stores.find((s) => s.id === id)
+  const { stores } = useShop()
+  const [store, setStore] = useState(stores.find((item) => item.id === id))
+  const [own, setOwn] = useState<Product[]>([])
+  useEffect(() => {
+    if (!id) return
+    void Promise.all([
+      catalogApi.store(id).then(setStore),
+      catalogApi.storeProducts(id).then((value) => setOwn(value.data)),
+    ])
+  }, [id])
   const [tab, setTab] = useState("Produits")
   const { followed, follow } = useShop()
   if (!store)
@@ -19,7 +29,6 @@ export const StorePage = () => {
         />
       </div>
     )
-  const own = products.filter((p) => p.storeId === id)
   return (
     <div className="container page store-detail">
       <div className="store-banner">

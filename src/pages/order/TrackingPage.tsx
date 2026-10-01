@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom"
 import { ArrowLeft, Clock3, MapPin, Minus, Plus, Truck } from "lucide-react"
-import { date } from "../../lib/mock"
+import { date } from "../../lib/format"
 import * as UI from "../../lib/ui"
 import { PageTitle, Empty, useShop } from "../../components/shared"
 export const TrackingPage = () => {
@@ -25,7 +25,7 @@ export const TrackingPage = () => {
       <PageTitle
         eyebrow="SUIVI DE LIVRAISON"
         title="Votre commande est en chemin"
-        description={`Commande ${id} · Arrivée estimée le ${date(order.estimatedDelivery)}`}
+        description={`Commande ${id} · Arrivée estimée le ${order.estimatedDelivery ? date(order.estimatedDelivery) : "à confirmer"}`}
       />
       <div className="tracking-layout">
         <div
@@ -98,7 +98,7 @@ export const TrackingPage = () => {
             <div className="eta">
               <Clock3 size={19} />
               <span>
-                Arrivée estimée <strong>{date(order.estimatedDelivery)}</strong>
+                Arrivée estimée <strong>{order.estimatedDelivery ? date(order.estimatedDelivery) : "à confirmer"}</strong>
               </span>
             </div>
           </div>

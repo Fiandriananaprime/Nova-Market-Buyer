@@ -1,6 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { ArrowLeft, ArrowRight, Check, MapPin, Wallet } from "lucide-react"
-import { date, money } from "../../lib/mock"
+import { date, money } from "../../lib/format"
 import * as UI from "../../lib/ui"
 import { Button, PageTitle, Empty, useShop } from "../../components/shared"
 export const OrderPage = () => {
@@ -73,7 +73,7 @@ export const OrderPage = () => {
               ))}
             </div>
             <p className="muted">
-              Livraison estimée le {date(order.estimatedDelivery)}
+              Livraison estimée le {order.estimatedDelivery ? date(order.estimatedDelivery) : "à confirmer"}
             </p>
           </div>
           <div className="panel">

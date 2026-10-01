@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom"
 import { ArrowRight } from "lucide-react"
-import { categories } from "../../lib/mock"
-import { PageTitle } from "../../components/shared"
+import { PageTitle, useShop } from "../../components/shared"
+import { imageUrl } from "../../lib/format"
 export const CategoriesPage = () => {
+  const { categories } = useShop()
   return (
     <div className="container page">
       <PageTitle
@@ -17,7 +18,7 @@ export const CategoriesPage = () => {
             to={`/explore?category=${c.id}`}
             key={c.id}
           >
-            <img src={c.image} alt="" />
+            <img src={imageUrl(c.image)} alt="" />
             <div className="category-overlay">
               <span>{c.count} PRODUITS</span>
               <strong>{c.name}</strong>

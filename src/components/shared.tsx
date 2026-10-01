@@ -3,8 +3,12 @@ import type { ReactNode } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { ArrowRight, Heart, Plus, Search, ShieldCheck, ShoppingBag, Star, X } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
-import { date, initialAddresses, initialOrders, mockCursor, money, products, reviews } from "../lib/mock"
-import type { Address, Order, ProductSummary, Review, Store } from "../lib/mock"
+import { catalogApi } from "../lib/api/catalog"
+import { accountApi, cartApi } from "../lib/api/account"
+import { buyerApi } from "../lib/api/buyer"
+import { checkoutApi } from "../lib/api/checkout"
+import type { Address, CartItem, Category, Notification, Order, Product, ProductSummary, Review, Store } from "../lib/types"
+import { date, imageUrl, money } from "../lib/format"
 import * as UI from "../lib/ui"
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "dark" | "light" | "outline" | "ghost"
@@ -161,28 +165,26 @@ export const Skeleton = ({ cards = 4 }: { cards?: number }) =>{
 }
 
 type ShopState = {
+  products: Product[]
+  categories: Category[]
+  stores: Store[]
   cart: Record<string, number>
+  cartItems: CartItem[]
   favorites: string[]
   followed: string[]
   orders: Order[]
   addresses: Address[]
-  notifications: {
-    id: string
-    title: string
-    message: string
-    read: boolean
-    type: string
-  }[]
+  notifications: Notification[]
   toast: string
-  add: (id: string, qty?: number) => void
-  update: (id: string, qty: number) => void
-  favorite: (id: string) => void
-  follow: (id: string) => void
+  add: (id: string, qty?: number) => Promise<void>
+  update: (id: string, qty: number) => Promise<void>
+  favorite: (id: string) => Promise<void>
+  follow: (id: string) => Promise<void>
   notify: (text: string) => void
-  clear: () => void
-  place: (order: Order) => void
+  clear: () => Promise<void>
+  place: (order: Order) => Promise<void>
   setAddresses: React.Dispatch<React.SetStateAction<Address[]>>
-  setNotifications: React.Dispatch<React.SetStateAction<ShopState["notifications"]>>
+  setNotifications: React.Dispatch<React.SetStateAction<Notification[]>>
 }
 const ShopContext = createContext<ShopState | null>(null)
 export const useShop = () => {
@@ -191,71 +193,80 @@ export const useShop = () => {
   return value
 }
 export const ShopProvider = ({ children }: { children: ReactNode }) =>{
+  const [products, setProducts] = useState<Product[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
+  const [stores, setStores] = useState<Store[]>([])
   const [cart, setCart] = useState<Record<string, number>>({})
+  const [cartItems, setCartItems] = useState<CartItem[]>([])
   const [favorites, setFavorites] = useState<string[]>([])
   const [followed, setFollowed] = useState<string[]>([])
-  const [orders, setOrders] = useState<Order[]>(initialOrders)
-  const [addresses, setAddresses] = useState<Address[]>(initialAddresses)
-  const [notifications, setNotifications] = useState([
-    {
-      id: "n1",
-      title: "Votre commande avance !",
-      message: "Votre commande ORD-2026-001 est en cours de préparation.",
-      read: false,
-      type: "order",
-    },
-    {
-      id: "n2",
-      title: "Bienvenue chez NovaMarket",
-      message: "Découvrez des créations sélectionnées avec soin pour vous.",
-      read: false,
-      type: "system",
-    },
-  ])
+  const [orders, setOrders] = useState<Order[]>([])
+  const [addresses, setAddresses] = useState<Address[]>([])
+  const [notifications, setNotifications] = useState<Notification[]>([])
   const [toast, setToast] = useState("")
+  useEffect(() => {
+    void Promise.all([
+      catalogApi.categories().then(setCategories),
+      catalogApi.featuredProducts().then(setProducts),
+      catalogApi.featuredStores().then(setStores),
+      cartApi.get().then((value) => {
+        setCartItems(value.items)
+        setCart(Object.fromEntries(value.items.map((item) => [item.productId, item.qty])))
+        setCartItems(value.items)
+      }),
+      buyerApi.addresses().then(setAddresses),
+      buyerApi.favorites().then((items) => setFavorites(items.map((item) => item.id))),
+      buyerApi.followedStores().then(setFollowed),
+      checkoutApi.orders().then((value) => setOrders(value.data)),
+      accountApi.notifications().then((value) => setNotifications(value.data)),
+    ]).catch((error: unknown) => notify(error instanceof Error ? error.message : "Impossible de charger les données"))
+  }, [])
   useEffect(() => {
     if (!toast) return
     const timeout = setTimeout(() => setToast(""), 2800)
     return () => clearTimeout(timeout)
   }, [toast])
   const notify = (text: string) => setToast(text)
-  const add = (id: string, qty = 1) => {
-    const product = products.find((p) => p.id === id)
-    if (!product || !product.stock) return
-    setCart((old) => ({
-      ...old,
-      [id]: Math.min(product.stock, (old[id] || 0) + qty),
-    }))
+  const add = async (id: string, qty = 1) => {
+    const value = await cartApi.addItem({ productId: id, qty })
+    setCart(Object.fromEntries(value.items.map((item) => [item.productId, item.qty])))
+    setCartItems(value.items)
     notify("Ajouté au panier")
   }
-  const update = (id: string, qty: number) =>
-    setCart((old) => {
-      const next = { ...old }
-      const stock = products.find((p) => p.id === id)?.stock || 0
-      if (qty <= 0) delete next[id]
-      else next[id] = Math.min(qty, stock)
-      return next
-    })
-  const favorite = (id: string) => {
-    setFavorites((old) =>
-      old.includes(id) ? old.filter((x) => x !== id) : [...old, id],
-    )
+  const update = async (id: string, qty: number) => {
+    const value = qty <= 0 ? await cartApi.removeItem(id) : await cartApi.updateItem(id, { qty })
+    setCart(Object.fromEntries(value.items.map((item) => [item.productId, item.qty])))
   }
-  const follow = (id: string) => {
-    setFollowed((old) =>
-      old.includes(id) ? old.filter((x) => x !== id) : [...old, id],
-    )
+  const favorite = async (id: string) => {
+    const active = favorites.includes(id)
+    if (active) await buyerApi.unfavoriteProduct(id)
+    else await buyerApi.favoriteProduct(id)
+    setFavorites((old) => active ? old.filter((x) => x !== id) : [...old, id])
   }
-  const clear = () => setCart({})
-  const place = (order: Order) => {
+  const follow = async (id: string) => {
+    const active = followed.includes(id)
+    if (active) await buyerApi.unfollowStore(id)
+    else await buyerApi.followStore(id)
+    setFollowed((old) => active ? old.filter((x) => x !== id) : [...old, id])
+  }
+  const clear = async () => {
+    await cartApi.clear()
+    setCart({})
+    setCartItems([])
+  }
+  const place = async (order: Order) => {
     setOrders((old) => [order, ...old])
-    clear()
+    await clear()
     notify("Votre commande a été enregistrée")
   }
   return (
     <ShopContext.Provider
       value={{
+        products,
+        categories,
+        stores,
         cart,
+        cartItems,
         favorites,
         followed,
         orders,
@@ -307,7 +318,7 @@ export const ProductCard = ({ product }: { product: ProductSummary }) =>{
           to={`/products/${product.id}`}
           aria-label={`Voir ${product.name}`}
         >
-          <img src={product.images} alt={product.name} loading="lazy" />
+          <img src={imageUrl(product.images)} alt={product.name} loading="lazy" />
         </Link>
         {product.tags[0] && (
           <span className="product-tag">{product.tags[0]}</span>
@@ -445,21 +456,10 @@ export function CursorList<T extends { id: string }>({
         if (!entries[0].isIntersecting || busy.current) return
         busy.current = true
         setLoading(true)
-        mockCursor(items, cursor)
-          .then((result) => {
-            setData((old) => [
-              ...old,
-              ...result.data.filter(
-                (item) => !old.some((existing) => existing.id === item.id),
-              ),
-            ])
-            setCursor(result.meta.nextCursor)
-            setHasMore(result.meta.hasMore)
-          })
-          .finally(() => {
-            busy.current = false
-            setLoading(false)
-          })
+        setData(items)
+        setHasMore(false)
+        busy.current = false
+        setLoading(false)
       },
       { rootMargin: "350px" },
     )
@@ -504,7 +504,7 @@ export const ReviewCard = ({ review }: { review: Review }) =>{
     </article>
   )
 }
-export const Reviews = ({ title = "Ce qu'ils en pensent" }: { title?: string }) =>{
+export const Reviews = ({ title = "Ce qu'ils en pensent", reviews = [] }: { title?: string; reviews?: Review[] }) =>{
   const [rating, setRating] = useState("all")
   const filtered = useMemo(
     () => reviews.filter((r) => rating === "all" || r.rating === +rating),

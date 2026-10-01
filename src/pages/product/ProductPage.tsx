@@ -1,12 +1,22 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { ArrowRight, ChevronRight, CircleCheck, Minus, Plus, ShieldCheck, ShoppingBag, Sparkles, Star, Truck } from "lucide-react"
-import { categories, money, products, stores } from "../../lib/mock"
+import { catalogApi } from "../../lib/api/catalog"
+import { imageUrl, money } from "../../lib/format"
 import * as UI from "../../lib/ui"
 import { Button, SectionTitle, Stars, Empty, Skeleton, useShop, FavoriteButton, ProductCard, CursorList, Reviews } from "../../components/shared"
 export const ProductPage = () => {
   const { id } = useParams()
-  const product = products.find((p) => p.id === id)
+  const { products, categories, stores } = useShop()
+  const [product, setProduct] = useState<(typeof products)[number]>()
+  const [related, setRelated] = useState<typeof products>([])
+  useEffect(() => {
+    if (!id) return
+    void Promise.all([
+      catalogApi.product(id).then(setProduct),
+      catalogApi.relatedProducts(id).then((value) => setRelated(value.data)),
+    ])
+  }, [id])
   const [qty, setQty] = useState(1)
   const [image, setImage] = useState(0)
   const [chosen, setChosen] = useState<Record<string, string>>({})
@@ -34,7 +44,7 @@ export const ProductPage = () => {
       <div className="product-detail">
         <div className="detail-gallery">
           <div className="detail-main-image">
-            <img src={product.images} alt={product.name} />
+            <img src={imageUrl(product.images)} alt={product.name} />
             <span className="product-tag">{product.tags[0]}</span>
           </div>
           <div className="thumbnail-row">
@@ -43,14 +53,14 @@ export const ProductPage = () => {
               onClick={() => setImage(0)}
               aria-label="Image principale"
             >
-              <img src={product.images} alt="" />
+              <img src={imageUrl(product.images)} alt="" />
             </UI.Button>
             <UI.Button
               className={image === 1 ? "selected" : ""}
               onClick={() => setImage(1)}
               aria-label="Voir le détail"
             >
-              <img src={product.images} alt="" className="detail-crop" />
+              <img src={imageUrl(product.images)} alt="" className="detail-crop" />
             </UI.Button>
           </div>
         </div>
@@ -173,7 +183,7 @@ export const ProductPage = () => {
         />
         <div className="product-grid">
           <CursorList
-            items={products.filter((p) => p.id !== id)}
+            items={related}
             render={(p) => <ProductCard key={p.id} product={p} />}
             skeleton={<Skeleton cards={2} />}
             empty={null}

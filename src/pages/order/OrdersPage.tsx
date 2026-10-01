@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { ArrowRight, Package } from "lucide-react"
-import { date, money } from "../../lib/mock"
+import { date, money } from "../../lib/format"
 import { Button, PageTitle, Empty, useShop } from "../../components/shared"
 export const OrdersPage = () => {
   const { orders } = useShop()

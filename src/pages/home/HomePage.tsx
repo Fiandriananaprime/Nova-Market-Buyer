@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom"
 import { ArrowRight, Heart, ShieldCheck, Sparkles, Truck } from "lucide-react"
-import { categories, imagery, products, stores } from "../../lib/mock"
+import { imageUrl } from "../../lib/format"
 import * as UI from "../../lib/ui"
 import { Button, SectionTitle, useShop, ProductGrid, StoreCard, SearchBox } from "../../components/shared"
 export const HomePage = () => {
-  const { notify } = useShop()
+  const { notify, categories, products, stores } = useShop()
   return (
     <>
       <section className="hero">
@@ -42,7 +42,7 @@ export const HomePage = () => {
           </div>
           <div className="hero-visual">
             <img
-              src={imagery.hero}
+              src={imageUrl(products[0]?.images)}
               alt="Sac artisanal tressé porté avec élégance"
             />
             <div className="hero-image-label">
@@ -115,7 +115,7 @@ export const HomePage = () => {
       <section className="editorial container">
         <div className="editorial-image">
           <img
-            src={imagery.craft}
+            src={imageUrl(products[1]?.images)}
             alt="Panier tressé artisanal"
             loading="lazy"
           />

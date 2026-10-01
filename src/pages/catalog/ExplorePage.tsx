@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { Search, SlidersHorizontal, Star, X } from "lucide-react"
-import { categories, products } from "../../lib/mock"
 import * as UI from "../../lib/ui"
-import { Button, Field, PageTitle, Empty, ProductGrid } from "../../components/shared"
+import { Button, Field, PageTitle, Empty, ProductGrid, useShop } from "../../components/shared"
 export const ExplorePage = () => {
+  const { categories, products } = useShop()
   const [params, setParams] = useSearchParams()
   const [filtersOpen, setFiltersOpen] = useState(false)
   const category = params.get("category") || ""

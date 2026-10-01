@@ -1,7 +1,7 @@
 import { useState } from "react"
 import type { FormEvent } from "react"
 import { MapPin, Plus, X } from "lucide-react"
-import type { Address } from "../../lib/mock"
+import type { Address } from "../../lib/types"
 import * as UI from "../../lib/ui"
 import { Button, Field, useShop } from "../../components/shared"
 export const AddressesPage = () => {
