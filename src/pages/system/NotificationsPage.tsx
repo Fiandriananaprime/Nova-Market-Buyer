@@ -1,8 +1,8 @@
-import { Bell, Check, CheckCheck, Package, Sparkles, X } from "lucide-react"
-import * as UI from "../../lib/ui"
-import { Button, PageTitle, Empty, useShop } from "../../components/shared"
+import { Bell, Check, CheckCheck, Package, Sparkles, X } from 'lucide-react';
+import * as UI from '../../lib/ui';
+import { Button, PageTitle, Empty, useShop } from '../../components/shared';
 export const NotificationsPage = () => {
-  const { notifications, setNotifications } = useShop()
+  const { notifications, setNotifications } = useShop();
   return (
     <div className="container page narrow-page">
       <PageTitle
@@ -24,11 +24,11 @@ export const NotificationsPage = () => {
         <div className="notification-list">
           {notifications.map((n) => (
             <div
-              className={`notification-row ${!n.read ? "unread" : ""}`}
+              className={`notification-row ${!n.read ? 'unread' : ''}`}
               key={n.id}
             >
               <div className="notification-icon">
-                {n.type === "order" ? (
+                {n.type === 'order' ? (
                   <Package size={21} />
                 ) : (
                   <Sparkles size={21} />
@@ -76,5 +76,5 @@ export const NotificationsPage = () => {
         />
       )}
     </div>
-  )
-}
+  );
+};

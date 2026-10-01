@@ -1,6 +1,6 @@
-import { BrowserRouter } from "react-router-dom"
-import { ShopProvider } from "./components/shared"
-import { Router } from "./routes"
+import { BrowserRouter } from 'react-router-dom';
+import { ShopProvider } from './components/shared';
+import { Router } from './routes';
 
 const App = () => (
   <BrowserRouter>
@@ -8,6 +8,6 @@ const App = () => (
       <Router />
     </ShopProvider>
   </BrowserRouter>
-)
+);
 
-export default App
+export default App;

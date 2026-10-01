@@ -1,20 +1,20 @@
-import { useState } from "react"
-import * as UI from "../../lib/ui"
-import { Button, Select, useShop } from "../../components/shared"
+import { useState } from 'react';
+import * as UI from '../../lib/ui';
+import { Button, Select, useShop } from '../../components/shared';
 export const PreferencesPage = () => {
-  const { notify } = useShop()
-  const [lang, setLang] = useState("fr")
-  const [theme, setTheme] = useState("light")
-  const [recommend, setRecommend] = useState(true)
-  const [recent, setRecent] = useState(true)
+  const { notify } = useShop();
+  const [lang, setLang] = useState('fr');
+  const [theme, setTheme] = useState('light');
+  const [recommend, setRecommend] = useState(true);
+  const [recent, setRecent] = useState(true);
   return (
     <div className="settings-panel">
       <UI.H2>Mes préférences</UI.H2>
       <p>Faites de NovaMarket un espace qui vous ressemble.</p>
       <form
         onSubmit={(e) => {
-          e.preventDefault()
-          notify("Préférences sauvegardées en mode démo")
+          e.preventDefault();
+          notify('Préférences sauvegardées en mode démo');
         }}
       >
         <div className="form-grid">
@@ -66,5 +66,5 @@ export const PreferencesPage = () => {
         <Button type="submit">Enregistrer mes préférences</Button>
       </form>
     </div>
-  )
-}
+  );
+};

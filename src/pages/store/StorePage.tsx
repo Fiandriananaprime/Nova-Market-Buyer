@@ -1,14 +1,34 @@
-import { useState } from "react"
-import { useParams } from "react-router-dom"
-import { ArrowRight, Check, MapPin, Plus, ShieldCheck } from "lucide-react"
-import { products, stores } from "../../lib/mock"
-import * as UI from "../../lib/ui"
-import { Button, SectionTitle, Stars, Empty, Skeleton, useShop, ProductCard, CursorList, Reviews } from "../../components/shared"
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { ArrowRight, Check, MapPin, Plus, ShieldCheck } from 'lucide-react';
+import { catalogApi } from '../../lib/api/catalog';
+import type { Product } from '../../lib/types';
+import * as UI from '../../lib/ui';
+import {
+  Button,
+  SectionTitle,
+  Stars,
+  Empty,
+  Skeleton,
+  useShop,
+  ProductCard,
+  CursorList,
+  Reviews,
+} from '../../components/shared';
 export const StorePage = () => {
-  const { id } = useParams()
-  const store = stores.find((s) => s.id === id)
-  const [tab, setTab] = useState("Produits")
-  const { followed, follow } = useShop()
+  const { id } = useParams();
+  const { stores } = useShop();
+  const [store, setStore] = useState(stores.find((item) => item.id === id));
+  const [own, setOwn] = useState<Product[]>([]);
+  useEffect(() => {
+    if (!id) return;
+    void Promise.all([
+      catalogApi.store(id).then(setStore),
+      catalogApi.storeProducts(id).then((value) => setOwn(value.data)),
+    ]);
+  }, [id]);
+  const [tab, setTab] = useState('Produits');
+  const { followed, follow } = useShop();
   if (!store)
     return (
       <div className="container page">
@@ -18,8 +38,7 @@ export const StorePage = () => {
           to="/stores"
         />
       </div>
-    )
-  const own = products.filter((p) => p.storeId === id)
+    );
   return (
     <div className="container page store-detail">
       <div className="store-banner">
@@ -37,12 +56,12 @@ export const StorePage = () => {
             <span>{store.productsCount} produits</span>
             <span>{store.followersCount} abonnés</span>
             <span className="open-state">
-              ● {store.isOpen ? "Ouvert" : "Fermé"}
+              ● {store.isOpen ? 'Ouvert' : 'Fermé'}
             </span>
           </div>
         </div>
         <Button
-          variant={followed.includes(store.id) ? "outline" : "dark"}
+          variant={followed.includes(store.id) ? 'outline' : 'dark'}
           onClick={() => follow(store.id)}
         >
           {followed.includes(store.id) ? (
@@ -57,27 +76,27 @@ export const StorePage = () => {
         </Button>
       </div>
       <div className="tab-bar">
-        {["Aperçu", "Produits", "Avis", "À propos"].map((t) => (
+        {['Aperçu', 'Produits', 'Avis', 'À propos'].map((t) => (
           <UI.Button
             key={t}
-            className={tab === t ? "active" : ""}
+            className={tab === t ? 'active' : ''}
             onClick={() => setTab(t)}
           >
             {t}
           </UI.Button>
         ))}
       </div>
-      {tab === "Aperçu" && (
+      {tab === 'Aperçu' && (
         <div className="store-intro">
           <span className="eyebrow">BIENVENUE CHEZ NOUS</span>
           <UI.H2>Des pièces faites pour durer.</UI.H2>
           <p>{store.description}</p>
-          <Button onClick={() => setTab("Produits")}>
+          <Button onClick={() => setTab('Produits')}>
             Explorer les produits <ArrowRight size={16} />
           </Button>
         </div>
       )}
-      {tab === "Produits" && (
+      {tab === 'Produits' && (
         <section className="section">
           <SectionTitle title={`La sélection ${store.name}`} />
           <div className="product-grid">
@@ -95,17 +114,17 @@ export const StorePage = () => {
           </div>
         </section>
       )}
-      {tab === "Avis" && <Reviews title="Avis sur la boutique" />}
-      {tab === "À propos" && (
+      {tab === 'Avis' && <Reviews title="Avis sur la boutique" />}
+      {tab === 'À propos' && (
         <div className="store-intro">
           <UI.H2>À propos de {store.name}</UI.H2>
           <p>{store.description}</p>
           <p>
-            <MapPin size={17} /> {store.location} · Membre depuis{" "}
+            <MapPin size={17} /> {store.location} · Membre depuis{' '}
             {store.joinedYear}
           </p>
         </div>
       )}
     </div>
-  )
-}
+  );
+};

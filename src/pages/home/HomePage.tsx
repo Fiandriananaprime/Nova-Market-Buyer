@@ -1,10 +1,17 @@
-import { Link } from "react-router-dom"
-import { ArrowRight, Heart, ShieldCheck, Sparkles, Truck } from "lucide-react"
-import { categories, imagery, products, stores } from "../../lib/mock"
-import * as UI from "../../lib/ui"
-import { Button, SectionTitle, useShop, ProductGrid, StoreCard, SearchBox } from "../../components/shared"
+import { Link } from 'react-router-dom';
+import { ArrowRight, Heart, ShieldCheck, Sparkles, Truck } from 'lucide-react';
+import { imageUrl } from '../../lib/format';
+import * as UI from '../../lib/ui';
+import {
+  Button,
+  SectionTitle,
+  useShop,
+  ProductGrid,
+  StoreCard,
+  SearchBox,
+} from '../../components/shared';
 export const HomePage = () => {
-  const { notify } = useShop()
+  const { notify, categories, products, stores } = useShop();
   return (
     <>
       <section className="hero">
@@ -42,11 +49,11 @@ export const HomePage = () => {
           </div>
           <div className="hero-visual">
             <img
-              src={imagery.hero}
+              src={imageUrl(products[0]?.images)}
               alt="Sac artisanal tressé porté avec élégance"
             />
             <div className="hero-image-label">
-              <span className="label-dot" /> LA SÉLECTION NOVAMARKET{" "}
+              <span className="label-dot" /> LA SÉLECTION NOVAMARKET{' '}
               <span>01 / 03</span>
             </div>
             <div className="hero-floating">
@@ -94,7 +101,7 @@ export const HomePage = () => {
             >
               <img src={category.image} alt="" loading="lazy" />
               <div className="category-overlay">
-                <span>{String(i + 1).padStart(2, "0")} / COLLECTION</span>
+                <span>{String(i + 1).padStart(2, '0')} / COLLECTION</span>
                 <strong>{category.name}</strong>
                 <span className="category-arrow">
                   <ArrowRight size={19} />
@@ -115,7 +122,7 @@ export const HomePage = () => {
       <section className="editorial container">
         <div className="editorial-image">
           <img
-            src={imagery.craft}
+            src={imageUrl(products[1]?.images)}
             alt="Panier tressé artisanal"
             loading="lazy"
           />
@@ -164,8 +171,8 @@ export const HomePage = () => {
           </div>
           <form
             onSubmit={(e) => {
-              e.preventDefault()
-              notify("Inscription à la newsletter bientôt disponible")
+              e.preventDefault();
+              notify('Inscription à la newsletter bientôt disponible');
             }}
           >
             <UI.Input
@@ -181,5 +188,5 @@ export const HomePage = () => {
         </div>
       </section>
     </>
-  )
-}
+  );
+};

@@ -1,16 +1,49 @@
-import { useState } from "react"
-import { Link, useParams } from "react-router-dom"
-import { ArrowRight, ChevronRight, CircleCheck, Minus, Plus, ShieldCheck, ShoppingBag, Sparkles, Star, Truck } from "lucide-react"
-import { categories, money, products, stores } from "../../lib/mock"
-import * as UI from "../../lib/ui"
-import { Button, SectionTitle, Stars, Empty, Skeleton, useShop, FavoriteButton, ProductCard, CursorList, Reviews } from "../../components/shared"
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import {
+  ArrowRight,
+  ChevronRight,
+  CircleCheck,
+  Minus,
+  Plus,
+  ShieldCheck,
+  ShoppingBag,
+  Sparkles,
+  Star,
+  Truck,
+} from 'lucide-react';
+import { catalogApi } from '../../lib/api/catalog';
+import { imageUrl, money } from '../../lib/format';
+import type { Product } from '../../lib/types';
+import * as UI from '../../lib/ui';
+import {
+  Button,
+  SectionTitle,
+  Stars,
+  Empty,
+  Skeleton,
+  useShop,
+  FavoriteButton,
+  ProductCard,
+  CursorList,
+  Reviews,
+} from '../../components/shared';
 export const ProductPage = () => {
-  const { id } = useParams()
-  const product = products.find((p) => p.id === id)
-  const [qty, setQty] = useState(1)
-  const [image, setImage] = useState(0)
-  const [chosen, setChosen] = useState<Record<string, string>>({})
-  const { add } = useShop()
+  const { id } = useParams();
+  const { categories, stores } = useShop();
+  const [product, setProduct] = useState<Product>();
+  const [related, setRelated] = useState<Product[]>([]);
+  useEffect(() => {
+    if (!id) return;
+    void Promise.all([
+      catalogApi.product(id).then(setProduct),
+      catalogApi.relatedProducts(id).then((value) => setRelated(value.data)),
+    ]);
+  }, [id]);
+  const [qty, setQty] = useState(1);
+  const [image, setImage] = useState(0);
+  const [chosen, setChosen] = useState<Record<string, string>>({});
+  const { add } = useShop();
   if (!product)
     return (
       <div className="container page">
@@ -20,8 +53,8 @@ export const ProductPage = () => {
           to="/explore"
         />
       </div>
-    )
-  const store = stores.find((s) => s.id === product.storeId)!
+    );
+  const store = stores.find((s) => s.id === product.storeId)!;
   return (
     <div className="container page detail-page">
       <div className="breadcrumbs">
@@ -34,29 +67,33 @@ export const ProductPage = () => {
       <div className="product-detail">
         <div className="detail-gallery">
           <div className="detail-main-image">
-            <img src={product.images} alt={product.name} />
+            <img src={imageUrl(product.images)} alt={product.name} />
             <span className="product-tag">{product.tags[0]}</span>
           </div>
           <div className="thumbnail-row">
             <UI.Button
-              className={image === 0 ? "selected" : ""}
+              className={image === 0 ? 'selected' : ''}
               onClick={() => setImage(0)}
               aria-label="Image principale"
             >
-              <img src={product.images} alt="" />
+              <img src={imageUrl(product.images)} alt="" />
             </UI.Button>
             <UI.Button
-              className={image === 1 ? "selected" : ""}
+              className={image === 1 ? 'selected' : ''}
               onClick={() => setImage(1)}
               aria-label="Voir le détail"
             >
-              <img src={product.images} alt="" className="detail-crop" />
+              <img
+                src={imageUrl(product.images)}
+                alt=""
+                className="detail-crop"
+              />
             </UI.Button>
           </div>
         </div>
         <div className="detail-info">
           <span className="eyebrow">
-            {product.brand} ·{" "}
+            {product.brand} ·{' '}
             {categories.find((c) => c.id === product.categoryId)?.name}
           </span>
           <UI.H1>{product.name}</UI.H1>
@@ -68,21 +105,21 @@ export const ProductPage = () => {
           <div className="detail-price">{money(product.price)}</div>
           <p className="detail-description">{product.description}</p>
           <span className="stock-line">
-            <CircleCheck size={17} />{" "}
+            <CircleCheck size={17} />{' '}
             {product.stock > 0
               ? `En stock · ${product.stock} disponibles`
-              : "Rupture de stock"}
+              : 'Rupture de stock'}
           </span>
           {product.variants.map((v) => (
             <div className="variant" key={v.name}>
               <strong>
-                {v.name} :{" "}
-                <span>{chosen[v.name] || "Choisissez une option"}</span>
+                {v.name} :{' '}
+                <span>{chosen[v.name] || 'Choisissez une option'}</span>
               </strong>
               <div>
                 {v.values.map((value) => (
                   <UI.Button
-                    className={chosen[v.name] === value ? "active" : ""}
+                    className={chosen[v.name] === value ? 'active' : ''}
                     key={value}
                     onClick={() =>
                       setChosen((old) => ({ ...old, [v.name]: value }))
@@ -173,7 +210,7 @@ export const ProductPage = () => {
         />
         <div className="product-grid">
           <CursorList
-            items={products.filter((p) => p.id !== id)}
+            items={related}
             render={(p) => <ProductCard key={p.id} product={p} />}
             skeleton={<Skeleton cards={2} />}
             empty={null}
@@ -187,5 +224,5 @@ export const ProductPage = () => {
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
