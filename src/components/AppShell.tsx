@@ -167,7 +167,6 @@ export const AppShell = () => {
           {toast}
         </div>
       )}
-      <div className="demo-label">Mode démo · Données fictives</div>
     </div>
   )
 }

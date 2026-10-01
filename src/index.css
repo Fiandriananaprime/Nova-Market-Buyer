@@ -155,7 +155,7 @@ h1,h2,h3,h4,p { margin-top: 0; }
 .footer-signature { width: 98px; background: white; border-radius: 2px; margin-top: 22px; }
 .footer-location { display: flex; align-items: center; gap: 7px; font-size: 11px; }
 .footer-bottom { padding: 22px 0; border-top: 1px solid #ffffff20; display: flex; justify-content: space-between; font-size: 10px; color: #8e9ca8; }
-.demo-label { position: fixed; z-index: 50; left: 13px; bottom: 13px; background: var(--color-smart-blue-950); color: white; padding: 6px 9px; font-size: 9px; letter-spacing: .04em; border-radius: 3px; opacity: .75; pointer-events: none; }
+
 .toast { position: fixed; z-index: 100; right: 25px; bottom: 27px; background: var(--color-smart-blue-950); color: white; display: flex; align-items: center; gap: 10px; padding: 15px 19px; font-size: 12px; box-shadow: 0 12px 35px #0003; }
 .page { padding-top: 49px; padding-bottom: 110px; min-height: 60vh; }
 .page-heading { margin-bottom: 33px; }
