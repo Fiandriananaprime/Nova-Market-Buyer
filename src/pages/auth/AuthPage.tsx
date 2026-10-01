@@ -5,6 +5,7 @@ import { imagery } from "../../lib/mock"
 import * as UI from "../../lib/ui"
 import logo from "../../imports/LargeNova.png"
 import { Button, Field, useShop } from "../../components/shared"
+import { authApi, NovaApiError } from "../../lib/api"
 export const AuthPage = ({
   mode,
 }: {
@@ -51,17 +52,42 @@ export const AuthPage = ({
                 : "Nous vous accompagnons à chaque étape."}
           </p>
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault()
-              notify("Mode démo : l'authentification sera activée avec l'API")
-              if (mode === "register") navigate("/auth/verify-email")
+              const form = new FormData(e.currentTarget)
+              try {
+                if (mode === "login") {
+                  await authApi.login({ email: String(form.get("email")), password: String(form.get("password")) })
+                  notify("Connexion réussie")
+                  navigate("/")
+                } else if (mode === "register") {
+                  const contactValue = String(form.get("contact"))
+                  await authApi.register({
+                    firstName: String(form.get("firstName")),
+                    lastName: String(form.get("lastName")),
+                    password: String(form.get("password")),
+                    ...(contact === "email" ? { email: contactValue } : { phone: contactValue }),
+                  })
+                  notify("Compte créé. Vérifiez votre contact.")
+                  navigate(contact === "email" ? "/auth/verify-email" : "/auth/verify-phone")
+                } else if (mode === "forgot") {
+                  await authApi.forgotPassword(String(form.get("identifier")))
+                  notify("Instructions envoyées si le compte existe")
+                } else {
+                  await (mode === "verify-email" ? authApi.verifyEmail : authApi.verifyPhone)(String(form.get("code")))
+                  notify("Vérification réussie")
+                  navigate("/auth/login")
+                }
+              } catch (error) {
+                notify(error instanceof NovaApiError ? error.message : "Impossible de contacter le serveur")
+              }
             }}
           >
             {mode === "register" && (
               <>
                 <div className="form-grid">
-                  <Field label="Prénom" required />
-                  <Field label="Nom" required />
+                  <Field label="Prénom" name="firstName" required />
+                  <Field label="Nom" name="lastName" required />
                 </div>
                 <div className="contact-choice">
                   <UI.Button
@@ -85,6 +111,7 @@ export const AuthPage = ({
               <Field
                 label="Adresse e-mail"
                 type="email"
+                name="email"
                 placeholder="vous@exemple.mg"
                 required
               />
@@ -92,18 +119,20 @@ export const AuthPage = ({
             {mode === "register" && (
               <Field
                 label={
-                  contact === "email" ? "Adresse e-mail" : "Numéro de téléphone"
+                    contact === "email" ? "Adresse e-mail" : "Numéro de téléphone"
                 }
+                name="contact"
                 type={contact === "email" ? "email" : "tel"}
                 required
               />
             )}
             {mode === "forgot" && (
-              <Field label="E-mail ou téléphone" required />
+              <Field                 label="E-mail ou téléphone" name="identifier" required />
             )}
             {mode.startsWith("verify") && (
               <Field
                 label="Code de vérification"
+                name="code"
                 inputMode="numeric"
                 minLength={4}
                 maxLength={10}
@@ -113,6 +142,7 @@ export const AuthPage = ({
             {(mode === "login" || mode === "register") && (
               <Field
                 label="Mot de passe"
+                name="password"
                 type="password"
                 minLength={8}
                 required
