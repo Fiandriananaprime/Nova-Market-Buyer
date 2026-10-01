@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { catalogApi } from '../../lib/api/catalog';
 import { imageUrl, money } from '../../lib/format';
+import type { Product } from '../../lib/types';
 import * as UI from '../../lib/ui';
 import {
   Button,
@@ -29,9 +30,9 @@ import {
 } from '../../components/shared';
 export const ProductPage = () => {
   const { id } = useParams();
-  const { products, categories, stores } = useShop();
-  const [product, setProduct] = useState<(typeof products)[number]>();
-  const [related, setRelated] = useState<typeof products>([]);
+  const { categories, stores } = useShop();
+  const [product, setProduct] = useState<Product>();
+  const [related, setRelated] = useState<Product[]>([]);
   useEffect(() => {
     if (!id) return;
     void Promise.all([

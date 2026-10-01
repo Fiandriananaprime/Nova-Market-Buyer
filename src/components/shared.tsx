@@ -564,7 +564,7 @@ export const Reviews = ({
   const [rating, setRating] = useState('all');
   const filtered = useMemo(
     () => reviews.filter((r) => rating === 'all' || r.rating === +rating),
-    [rating],
+    [rating, reviews],
   );
   return (
     <section className="reviews-section">

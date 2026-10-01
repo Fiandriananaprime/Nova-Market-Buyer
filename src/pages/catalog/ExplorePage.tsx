@@ -28,7 +28,7 @@ export const ExplorePage = () => {
     setParams(next);
   };
   const shown = useMemo(() => {
-    let list = products.filter(
+    const list = products.filter(
       (p) =>
         (!category ||
           p.categoryId === category ||
@@ -55,7 +55,7 @@ export const ExplorePage = () => {
                 ? b.reviewsCount - a.reviewsCount
                 : 0,
     );
-  }, [category, search, sort, minPrice, maxPrice, minRating]);
+  }, [category, search, sort, minPrice, maxPrice, minRating, products]);
   const filters = (
     <>
       <div className="filter-heading">
