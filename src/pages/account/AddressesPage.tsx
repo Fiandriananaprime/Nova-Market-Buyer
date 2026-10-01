@@ -36,8 +36,8 @@ export const AddressesPage = () => {
     notify('Adresse enregistrée en mode démo');
   };
   return (
-    <div className="settings-panel">
-      <div className="panel-heading">
+    <div className="border border-[var(--color-parchment-200)] bg-white p-7 max-[800px]:p-5">
+      <div className="flex items-center justify-between gap-4 border-b border-[var(--color-parchment-200)] pb-5">
         <div>
           <UI.H2>Mes adresses</UI.H2>
           <p>Vos destinations préférées, toujours prêtes.</p>
@@ -47,18 +47,18 @@ export const AddressesPage = () => {
         </Button>
       </div>
       {addresses.map((a) => (
-        <div className="address-card" key={a.id}>
+        <div className="flex gap-4 border-b border-[var(--color-parchment-100)] py-5" key={a.id}>
           <MapPin size={21} />
           <div>
             <strong>
               {a.label} {a.isDefault && <small>Par défaut</small>}
             </strong>
-            <p>
+            <p className="my-2 text-[12px] text-[var(--color-ink-muted)]">
               {a.recipientName} · {a.phone}
               <br />
               {a.street}, {a.district}, {a.city}, {a.region}
             </p>
-            <div>
+            <div className="flex flex-wrap gap-2">
               <UI.Button onClick={() => start(a)}>Modifier</UI.Button>
               <UI.Button
                 onClick={() => {
@@ -84,9 +84,9 @@ export const AddressesPage = () => {
         </div>
       ))}
       {adding && (
-        <div className="modal-backdrop" onClick={() => setAdding(false)}>
+        <div className="fixed inset-0 z-50 grid place-items-center bg-[var(--color-overlay)] p-5" onClick={() => setAdding(false)}>
           <form
-            className="modal-panel"
+            className="relative max-h-[90vh] w-full max-w-[620px] overflow-y-auto bg-[var(--color-surface)] p-7"
             role="dialog"
             aria-modal="true"
             aria-label="Adresse"
@@ -95,14 +95,14 @@ export const AddressesPage = () => {
           >
             <UI.Button
               type="button"
-              className="close-button"
+              className="absolute top-4 right-4 border-0 bg-transparent"
               aria-label="Fermer"
               onClick={() => setAdding(false)}
             >
               <X />
             </UI.Button>
             <UI.H2>{editing ? "Modifier l'adresse" : 'Nouvelle adresse'}</UI.H2>
-            <div className="form-grid">
+            <div className="grid grid-cols-2 gap-4 max-[800px]:grid-cols-1">
               {[
                 ['label', "Nom de l'adresse"],
                 ['recipientName', 'Nom du destinataire'],

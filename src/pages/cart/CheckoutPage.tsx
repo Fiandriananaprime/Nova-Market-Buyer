@@ -78,7 +78,7 @@ export const CheckoutPage = () => {
   };
   if (!items.length)
     return (
-      <div className="container page">
+      <div className="mx-auto w-[calc(100%-64px)] max-w-[1360px] pt-[49px] pb-[110px] max-[1100px]:w-[calc(100%-48px)] max-[800px]:w-[calc(100%-40px)] max-[800px]:max-w-[720px] max-[800px]:pt-[34px] max-[800px]:pb-[92px] max-[600px]:w-[calc(100%-32px)] max-[600px]:pt-[27px]">
         <Empty
           icon={ShoppingBag}
           title="Votre panier est vide"
@@ -88,32 +88,32 @@ export const CheckoutPage = () => {
       </div>
     );
   return (
-    <div className="container page">
+    <div className="mx-auto w-[calc(100%-64px)] max-w-[1360px] pt-[49px] pb-[110px] max-[1100px]:w-[calc(100%-48px)] max-[800px]:w-[calc(100%-40px)] max-[800px]:max-w-[720px] max-[800px]:pt-[34px] max-[800px]:pb-[92px] max-[600px]:w-[calc(100%-32px)] max-[600px]:pt-[27px]">
       <PageTitle
         eyebrow="PLUS QUE QUELQUES ÉTAPES"
         title="Finaliser ma commande"
         description="Un parcours simple pour vos belles découvertes."
       />
-      <div className="checkout-steps">
+      <div className="mb-8 grid grid-cols-4 border-y border-[var(--color-parchment-200)] max-[800px]:grid-cols-2">
         {steps.map((s, i) => (
           <div
             key={s}
-            className={i === step ? 'current' : i < step ? 'done' : ''}
+            className={`border-b-2 px-3 py-4 text-center text-[11px] ${i === step ? 'border-[var(--color-smart-blue-950)] font-bold text-[var(--color-smart-blue-950)]' : i < step ? 'border-[var(--color-tropical-teal-500)] text-[var(--color-tropical-teal-700)]' : 'border-transparent text-[var(--color-ink-faint)]'}`}
           >
-            <span>{i < step ? <Check size={15} /> : i + 1}</span>
+            <span className="mr-2 inline-grid size-6 place-items-center rounded-full bg-[var(--color-parchment-100)]">{i < step ? <Check size={15} /> : i + 1}</span>
             {s}
           </div>
         ))}
       </div>
-      <div className="checkout-layout">
-        <div className="checkout-panel">
+      <div className="grid grid-cols-[minmax(0,1fr)_340px] items-start gap-8 max-[800px]:block">
+        <div className="border border-[var(--color-parchment-200)] bg-white p-7 max-[800px]:p-5">
           {step === 0 && (
             <>
               <UI.H2>Où souhaitez-vous être livré ?</UI.H2>
               <p>Choisissez une adresse enregistrée.</p>
               {addresses.map((a) => (
                 <UI.Button
-                  className={`option-card ${
+                  className={`flex w-full items-center gap-4 border border-[var(--color-parchment-200)] bg-white p-4 text-left ${
                     addressId === a.id ? 'active' : ''
                   }`}
                   onClick={() => setAddressId(a.id)}
@@ -131,10 +131,10 @@ export const CheckoutPage = () => {
                       {a.street}, {a.city}
                     </span>
                   </span>
-                  <span className="radio-dot" />
+                  <span className="ml-auto size-4 rounded-full border border-[var(--color-parchment-300)]" />
                 </UI.Button>
               ))}
-              <Link className="text-link" to="/account/addresses">
+              <Link className="text-[12px] font-bold underline underline-offset-4" to="/account/addresses">
                 <Plus size={17} /> Ajouter une adresse
               </Link>
             </>
@@ -170,7 +170,7 @@ export const CheckoutPage = () => {
                 return (
                   <UI.Button
                     key={id as string}
-                    className={`option-card ${delivery === id ? 'active' : ''}`}
+                    className={`flex w-full items-center gap-4 border border-[var(--color-parchment-200)] bg-white p-4 text-left ${delivery === id ? 'border-[var(--color-smart-blue-950)] bg-[var(--color-parchment-50)]' : ''}`}
                     onClick={() => setDelivery(id as string)}
                   >
                     <I size={23} />
@@ -179,7 +179,7 @@ export const CheckoutPage = () => {
                       <span>{sub as string}</span>
                     </span>
                     <b>{price ? money(price as number) : 'Gratuit'}</b>
-                    <span className="radio-dot" />
+                    <span className="ml-auto size-4 rounded-full border border-[var(--color-parchment-300)]" />
                   </UI.Button>
                 );
               })}
@@ -197,7 +197,7 @@ export const CheckoutPage = () => {
               ].map(([id, title, sub]) => (
                 <UI.Button
                   key={id}
-                  className={`option-card ${payment === id ? 'active' : ''}`}
+                  className={`flex w-full items-center gap-4 border border-[var(--color-parchment-200)] bg-white p-4 text-left ${payment === id ? 'border-[var(--color-smart-blue-950)] bg-[var(--color-parchment-50)]' : ''}`}
                   onClick={() => setPayment(id)}
                 >
                   {id === 'card' ? (
@@ -209,7 +209,7 @@ export const CheckoutPage = () => {
                     <strong>{title}</strong>
                     <span>{sub}</span>
                   </span>
-                  <span className="radio-dot" />
+                  <span className="ml-auto size-4 rounded-full border border-[var(--color-parchment-300)]" />
                 </UI.Button>
               ))}
               {(payment === 'mvola' || payment === 'orange_money') && (
@@ -227,22 +227,22 @@ export const CheckoutPage = () => {
             <>
               <UI.H2>Tout est prêt ?</UI.H2>
               <p>Vérifiez les détails de votre commande avant de confirmer.</p>
-              <div className="checkout-recap">
+              <div className="border-y border-[var(--color-parchment-200)] py-4">
                 <UI.H3>Votre sélection</UI.H3>
                 {items.map((item) => (
-                  <div key={item.id ?? item.productId}>
-                    <img src={item.image} alt="" />
-                    <span>
+                  <div className="flex items-center gap-3 border-b border-[var(--color-parchment-100)] py-3 last:border-0" key={item.id ?? item.productId}>
+                    <img className="size-12 object-cover" src={item.image} alt="" />
+                    <span className="flex-1 text-[12px]">
                       {item.productName}
-                      <small>
+                      <small className="mt-1 block text-[10px] text-[var(--color-ink-subtle)]">
                         {item.sellerName} · Quantité {item.qty}
                       </small>
                     </span>
-                    <strong>{money(item.price * item.qty)}</strong>
+                    <strong className="text-[12px]">{money(item.price * item.qty)}</strong>
                   </div>
                 ))}
               </div>
-              <div className="checkout-detail">
+              <div className="my-5 grid grid-cols-2 gap-3 text-[12px] [&_span]:text-right [&_span]:text-[var(--color-ink-muted)]">
                 <strong>Livraison</strong>
                 <span>
                   {delivery === 'standard'
@@ -263,7 +263,7 @@ export const CheckoutPage = () => {
                         : 'Carte bancaire'}
                 </span>
               </div>
-              <label className="field">
+              <label className="flex flex-col gap-2 text-[11px] font-bold text-[var(--color-ink-muted)]">
                 <span>Une note pour votre commande ? (facultatif)</span>
                 <UI.Textarea
                   value={note}
@@ -274,11 +274,11 @@ export const CheckoutPage = () => {
             </>
           )}
           {error && (
-            <div className="form-error" role="alert">
+            <div className="mt-5 border-l-[3px] border-[var(--color-parchment-700)] bg-[var(--color-parchment-50)] p-[13px] text-[12px]" role="alert">
               {error}
             </div>
           )}
-          <div className="checkout-buttons">
+          <div className="mt-7 flex justify-between gap-3">
             {step > 0 && (
               <Button
                 variant="outline"
@@ -296,7 +296,7 @@ export const CheckoutPage = () => {
             </Button>
           </div>
         </div>
-        <aside className="summary-card">
+        <aside className="sticky top-5 border border-[var(--color-parchment-200)] bg-white p-6 max-[800px]:static max-[800px]:mt-6">
           <UI.H2>Votre commande</UI.H2>
           {items.map((item) => (
             <div key={item.id ?? item.productId}>
@@ -314,7 +314,7 @@ export const CheckoutPage = () => {
             <span>Livraison</span>
             <strong>{money(fee)}</strong>
           </div>
-          <div className="summary-total">
+          <div className="flex justify-between border-t border-[var(--color-parchment-200)] pt-4">
             <span>Total</span>
             <strong>{money(subtotal + fee)}</strong>
           </div>
