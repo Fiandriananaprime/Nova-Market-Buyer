@@ -18,8 +18,8 @@ export const PaymentsPage = () => {
   const [phone, setPhone] = useState('');
   const [label, setLabel] = useState('');
   return (
-    <div className="settings-panel">
-      <div className="panel-heading">
+    <div className="border border-[var(--color-parchment-200)] bg-white p-7 max-[800px]:p-5">
+      <div className="flex items-center justify-between gap-4 border-b border-[var(--color-parchment-200)] pb-5">
         <div>
           <UI.H2>Moyens de paiement</UI.H2>
           <p>Retrouvez vos moyens de paiement enregistrés.</p>
@@ -30,7 +30,7 @@ export const PaymentsPage = () => {
       </div>
       {methods.length ? (
         methods.map((m) => (
-          <div className="payment-card" key={m.id}>
+          <div className="flex items-center justify-between gap-4 border-b border-[var(--color-parchment-100)] py-5" key={m.id}>
             <Wallet size={26} />
             <div>
               <strong>{m.label || m.type.toUpperCase()}</strong>
@@ -55,14 +55,14 @@ export const PaymentsPage = () => {
           text="Ajoutez un portefeuille mobile pour faciliter vos prochains achats."
         />
       )}
-      <p className="muted">
+      <p className="text-[11px] leading-[1.7] text-[var(--color-ink-faint)]">
         Les cartes bancaires nécessitent une intégration de paiement sécurisée.
         Aucune donnée de carte brute n'est collectée ici.
       </p>
       {adding && (
-        <div className="modal-backdrop" onClick={() => setAdding(false)}>
+        <div className="fixed inset-0 z-50 grid place-items-center bg-[var(--color-overlay)] p-5" onClick={() => setAdding(false)}>
           <form
-            className="modal-panel"
+            className="relative w-full max-w-[620px] bg-[var(--color-surface)] p-7"
             role="dialog"
             aria-modal="true"
             aria-label="Nouveau moyen de paiement"
@@ -86,7 +86,7 @@ export const PaymentsPage = () => {
           >
             <UI.Button
               type="button"
-              className="close-button"
+              className="absolute top-4 right-4 border-0 bg-transparent"
               onClick={() => setAdding(false)}
               aria-label="Fermer"
             >

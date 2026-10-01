@@ -5,24 +5,24 @@ import { Button, Field, useShop } from '../../components/shared';
 export const SecurityPage = () => {
   const { notify } = useShop();
   return (
-    <div className="settings-panel">
+    <div className="border border-[var(--color-parchment-200)] bg-white p-7 max-[800px]:p-5">
       <UI.H2>Sécurité du compte</UI.H2>
       <p>Gardez le contrôle de vos accès et de vos informations.</p>
-      <div className="security-row">
+      <div className="flex items-center gap-4 border-y border-[var(--color-parchment-100)] py-4">
         <ShieldCheck size={21} />
         <span>
           <strong>Vérification de l'e-mail</strong>
-          <small>Confirmez votre adresse pour protéger votre compte</small>
+          <small className="block text-[11px] text-[var(--color-ink-subtle)]">Confirmez votre adresse pour protéger votre compte</small>
         </span>
-        <Link to="/auth/verify-email" className="text-link">
+        <Link to="/auth/verify-email" className="text-[12px] font-bold underline underline-offset-4">
           Vérifier <ArrowRight size={15} />
         </Link>
       </div>
-      <div className="security-row">
+      <div className="flex items-center gap-4 border-b border-[var(--color-parchment-100)] py-4">
         <LockKeyhole size={21} />
         <span>
           <strong>Authentification à deux facteurs</strong>
-          <small>Une protection supplémentaire pour votre compte</small>
+          <small className="block text-[11px] text-[var(--color-ink-subtle)]">Une protection supplémentaire pour votre compte</small>
         </span>
         <Button
           variant="outline"
@@ -33,11 +33,11 @@ export const SecurityPage = () => {
           Configurer
         </Button>
       </div>
-      <div className="security-row">
+      <div className="flex items-center gap-4 border-b border-[var(--color-parchment-100)] py-4">
         <UserRound size={21} />
         <span>
           <strong>Sessions actives</strong>
-          <small>Gérez les appareils connectés à votre compte</small>
+          <small className="block text-[11px] text-[var(--color-ink-subtle)]">Gérez les appareils connectés à votre compte</small>
         </span>
         <Button
           variant="outline"

@@ -58,7 +58,7 @@ export const ExplorePage = () => {
   }, [category, search, sort, minPrice, maxPrice, minRating, products]);
   const filters = (
     <>
-      <div className="filter-heading">
+      <div className="flex items-center justify-between py-5">
         <UI.H3>Filtres</UI.H3>
         <UI.Button
           onClick={() =>
@@ -68,10 +68,10 @@ export const ExplorePage = () => {
           Réinitialiser
         </UI.Button>
       </div>
-      <div className="filter-group">
+      <div className="border-t border-[var(--color-parchment-100)] py-[23px]">
         <UI.H4>Catégorie</UI.H4>
         <UI.Button
-          className={!category ? 'selected' : ''}
+          className={`flex w-full items-center justify-between gap-1 border-0 bg-transparent py-[7px] text-left text-[12px] text-[var(--color-ink-muted)] hover:font-bold hover:text-[var(--color-smart-blue-950)] ${!category ? 'font-bold text-[var(--color-smart-blue-950)]' : ''}`}
           onClick={() => change('category', '')}
         >
           Tout voir <span>{products.length}</span>
@@ -79,7 +79,7 @@ export const ExplorePage = () => {
         {categories.map((c) => (
           <UI.Button
             key={c.id}
-            className={category === c.id ? 'selected' : ''}
+            className={`flex w-full items-center justify-between gap-1 border-0 bg-transparent py-[7px] text-left text-[12px] text-[var(--color-ink-muted)] hover:font-bold hover:text-[var(--color-smart-blue-950)] ${category === c.id ? 'font-bold text-[var(--color-smart-blue-950)]' : ''}`}
             onClick={() => change('category', c.id)}
           >
             {c.name}
@@ -87,9 +87,9 @@ export const ExplorePage = () => {
           </UI.Button>
         ))}
       </div>
-      <div className="filter-group">
+      <div className="border-t border-[var(--color-parchment-100)] py-[23px]">
         <UI.H4>Prix (Ar)</UI.H4>
-        <div className="price-fields">
+        <div className="flex gap-2">
           <Field
             label="Min"
             type="number"
@@ -108,12 +108,12 @@ export const ExplorePage = () => {
           />
         </div>
       </div>
-      <div className="filter-group">
+      <div className="border-t border-[var(--color-parchment-100)] py-[23px]">
         <UI.H4>Avis clients</UI.H4>
         {[0, 4, 4.5].map((n) => (
           <UI.Button
             key={n}
-            className={minRating === (n ? String(n) : '') ? 'selected' : ''}
+            className={`flex w-full items-center justify-between gap-1 border-0 bg-transparent py-[7px] text-left text-[12px] text-[var(--color-ink-muted)] hover:font-bold hover:text-[var(--color-smart-blue-950)] ${minRating === (n ? String(n) : '') ? 'font-bold text-[var(--color-smart-blue-950)]' : ''}`}
             onClick={() => change('minRating', n ? String(n) : '')}
           >
             {n ? (
@@ -129,14 +129,14 @@ export const ExplorePage = () => {
     </>
   );
   return (
-    <div className="container page">
+    <div className="mx-auto w-[calc(100%-64px)] max-w-[1360px] pt-[49px] pb-[110px] max-[1100px]:w-[calc(100%-48px)] max-[800px]:w-[calc(100%-40px)] max-[800px]:max-w-[720px] max-[800px]:pt-[34px] max-[800px]:pb-[92px] max-[600px]:w-[calc(100%-32px)] max-[600px]:pt-[27px]">
       <PageTitle
         eyebrow="LA COLLECTION"
         title="Explorer les découvertes"
         description="Des trouvailles sélectionnées pour rendre chaque jour un peu plus inspirant."
       />
       <form
-        className="explore-search"
+        className="mb-[42px] flex max-w-[680px] items-center gap-3.5 border border-[var(--color-parchment-200)] p-[6px] pl-[19px] [&_input]:min-w-0 [&_input]:flex-1 [&_input]:border-0 [&_input]:outline-none"
         onSubmit={(e) => {
           e.preventDefault();
           change('search', draftSearch);
@@ -151,24 +151,24 @@ export const ExplorePage = () => {
         />
         <Button type="submit">Rechercher</Button>
       </form>
-      <div className="explore-layout">
-        <aside className="filters-sidebar">{filters}</aside>
-        <div className="results">
-          <div className="results-toolbar">
+      <div className="grid grid-cols-[235px_minmax(0,1fr)] gap-[45px] max-[800px]:block">
+        <aside className="border-t border-[var(--color-parchment-200)] max-[800px]:hidden">{filters}</aside>
+        <div>
+          <div className="mb-[21px] flex items-center justify-between gap-[15px] border-t border-b border-[var(--color-parchment-100)] py-3 text-[12px] text-[var(--color-ink-muted)]">
             <span>
               <strong>{shown.length}</strong>{' '}
               {shown.length > 1 ? 'résultats' : 'résultat'}
               {search && <> pour « {search} »</>}
             </span>
-            <div>
+            <div className="flex items-center gap-[15px]">
               <Button
                 variant="outline"
-                className="mobile-filter"
+                className="hidden max-[800px]:inline-flex"
                 onClick={() => setFiltersOpen(true)}
               >
                 <SlidersHorizontal size={17} /> Filtres
               </Button>
-              <label className="sort-label">
+              <label className="flex items-center gap-2 whitespace-nowrap">
                 Trier par{' '}
                 <UI.Select
                   value={sort}
@@ -198,16 +198,16 @@ export const ExplorePage = () => {
         </div>
       </div>
       {filtersOpen && (
-        <div className="modal-backdrop" onClick={() => setFiltersOpen(false)}>
+        <div className="fixed inset-0 z-50 flex items-end bg-[var(--color-overlay)] min-[801px]:hidden" onClick={() => setFiltersOpen(false)}>
           <div
-            className="filter-drawer"
+            className="relative max-h-[85vh] w-full overflow-y-auto bg-[var(--color-surface)] p-5"
             role="dialog"
             aria-modal="true"
             aria-label="Filtres"
             onClick={(e) => e.stopPropagation()}
           >
             <UI.Button
-              className="close-button"
+              className="absolute top-4 right-4"
               aria-label="Fermer"
               onClick={() => setFiltersOpen(false)}
             >

@@ -3,7 +3,7 @@ import { Button, Field, useShop } from '../../components/shared';
 export const ProfilePage = () => {
   const { notify } = useShop();
   return (
-    <div className="settings-panel">
+    <div className="border border-[var(--color-parchment-200)] bg-white p-7 max-[800px]:p-5">
       <UI.H2>Informations personnelles</UI.H2>
       <p>Personnalisez les informations associées à votre compte.</p>
       <form
@@ -12,7 +12,7 @@ export const ProfilePage = () => {
           notify('Profil mis à jour en mode démo');
         }}
       >
-        <div className="form-grid">
+        <div className="grid grid-cols-2 gap-4 max-[800px]:grid-cols-1">
           <Field label="Prénom" defaultValue="Aina" required />
           <Field label="Nom" defaultValue="Rakoto" required />
           <Field
@@ -26,7 +26,7 @@ export const ProfilePage = () => {
             defaultValue="+261 34 12 345 67"
           />
         </div>
-        <small className="muted">
+        <small className="my-4 block text-[11px] text-[var(--color-ink-subtle)]">
           Les changements d'e-mail et de téléphone nécessiteront une
           vérification lorsque votre compte sera connecté.
         </small>

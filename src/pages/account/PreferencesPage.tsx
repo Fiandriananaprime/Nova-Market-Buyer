@@ -8,7 +8,7 @@ export const PreferencesPage = () => {
   const [recommend, setRecommend] = useState(true);
   const [recent, setRecent] = useState(true);
   return (
-    <div className="settings-panel">
+    <div className="border border-[var(--color-parchment-200)] bg-white p-7 max-[800px]:p-5">
       <UI.H2>Mes préférences</UI.H2>
       <p>Faites de NovaMarket un espace qui vous ressemble.</p>
       <form
@@ -17,7 +17,7 @@ export const PreferencesPage = () => {
           notify('Préférences sauvegardées en mode démo');
         }}
       >
-        <div className="form-grid">
+        <div className="grid grid-cols-2 gap-4 max-[800px]:grid-cols-1">
           <Select
             label="Langue préférée"
             value={lang}
@@ -37,14 +37,14 @@ export const PreferencesPage = () => {
             <option value="system">Système</option>
           </Select>
         </div>
-        <small className="muted">
+        <small className="my-4 block text-[11px] text-[var(--color-ink-subtle)]">
           Les traductions et le mode sombre seront disponibles avec
           l'intégration complète.
         </small>
-        <label className="switch-row">
+        <label className="flex items-center justify-between gap-4 border-t border-[var(--color-parchment-100)] py-4">
           <span>
             <strong>Recommandations personnalisées</strong>
-            <small>Des découvertes adaptées à vos envies</small>
+            <small className="block text-[11px] text-[var(--color-ink-subtle)]">Des découvertes adaptées à vos envies</small>
           </span>
           <UI.Input
             type="checkbox"
@@ -52,10 +52,10 @@ export const PreferencesPage = () => {
             onChange={(e) => setRecommend(e.target.checked)}
           />
         </label>
-        <label className="switch-row">
+        <label className="flex items-center justify-between gap-4 border-t border-[var(--color-parchment-100)] py-4">
           <span>
             <strong>Produits récemment consultés</strong>
-            <small>Retrouvez facilement vos dernières découvertes</small>
+            <small className="block text-[11px] text-[var(--color-ink-subtle)]">Retrouvez facilement vos dernières découvertes</small>
           </span>
           <UI.Input
             type="checkbox"
