@@ -1,6 +1,6 @@
-import { PageTitle, StoreCard, useShop } from "../../components/shared"
+import { PageTitle, StoreCard, useShop } from '../../components/shared';
 export const StoresPage = () => {
-  const { stores } = useShop()
+  const { stores } = useShop();
   return (
     <div className="container page">
       <PageTitle
@@ -14,5 +14,5 @@ export const StoresPage = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};

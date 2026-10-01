@@ -1,15 +1,15 @@
-import * as UI from "../../lib/ui"
-import { Button, Field, useShop } from "../../components/shared"
+import * as UI from '../../lib/ui';
+import { Button, Field, useShop } from '../../components/shared';
 export const ProfilePage = () => {
-  const { notify } = useShop()
+  const { notify } = useShop();
   return (
     <div className="settings-panel">
       <UI.H2>Informations personnelles</UI.H2>
       <p>Personnalisez les informations associées à votre compte.</p>
       <form
         onSubmit={(e) => {
-          e.preventDefault()
-          notify("Profil mis à jour en mode démo")
+          e.preventDefault();
+          notify('Profil mis à jour en mode démo');
         }}
       >
         <div className="form-grid">
@@ -33,5 +33,5 @@ export const ProfilePage = () => {
         <Button type="submit">Enregistrer les modifications</Button>
       </form>
     </div>
-  )
-}
+  );
+};

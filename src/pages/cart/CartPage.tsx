@@ -1,12 +1,24 @@
-import { Link } from "react-router-dom"
-import { ArrowRight, CircleCheck, Minus, Plus, ShieldCheck, ShoppingBag, Store as StoreIcon, Trash2 } from "lucide-react"
-import { money } from "../../lib/format"
-import * as UI from "../../lib/ui"
-import { Button, PageTitle, Empty, useShop } from "../../components/shared"
+import { Link } from 'react-router-dom';
+import {
+  ArrowRight,
+  CircleCheck,
+  Minus,
+  Plus,
+  ShieldCheck,
+  ShoppingBag,
+  Store as StoreIcon,
+  Trash2,
+} from 'lucide-react';
+import { money } from '../../lib/format';
+import * as UI from '../../lib/ui';
+import { Button, PageTitle, Empty, useShop } from '../../components/shared';
 export const CartPage = () => {
-  const { cart, cartItems: items, update, clear } = useShop()
-  const subtotal = items.reduce((total, item) => total + item.price * item.qty, 0)
-  const groups = [...new Set(items.map((i) => i.sellerName))]
+  const { cart, cartItems: items, update, clear } = useShop();
+  const subtotal = items.reduce(
+    (total, item) => total + item.price * item.qty,
+    0,
+  );
+  const groups = [...new Set(items.map((i) => i.sellerName))];
   return (
     <div className="container page">
       <PageTitle
@@ -14,10 +26,10 @@ export const CartPage = () => {
         title="Mon panier"
         description={
           items.length
-            ? `${items.length} belle${items.length > 1 ? "s" : ""} découverte${
-                items.length > 1 ? "s" : ""
+            ? `${items.length} belle${items.length > 1 ? 's' : ''} découverte${
+                items.length > 1 ? 's' : ''
               } vous attendent.`
-            : "Les belles choses commencent par une découverte."
+            : 'Les belles choses commencent par une découverte.'
         }
         action={
           items.length ? (
@@ -77,7 +89,9 @@ export const CartPage = () => {
                           <UI.Button
                             aria-label="Augmenter"
                             onClick={() => update(item.productId, item.qty + 1)}
-                            disabled={item.stock !== undefined && item.qty >= item.stock}
+                            disabled={
+                              item.stock !== undefined && item.qty >= item.stock
+                            }
                           >
                             <Plus size={15} />
                           </UI.Button>
@@ -92,7 +106,7 @@ export const CartPage = () => {
             <UI.H2>Récapitulatif</UI.H2>
             <div>
               <span>
-                Sous-total ({Object.values(cart).reduce((a, b) => a + b, 0)}{" "}
+                Sous-total ({Object.values(cart).reduce((a, b) => a + b, 0)}{' '}
                 articles)
               </span>
               <strong>{money(subtotal)}</strong>
@@ -115,5 +129,5 @@ export const CartPage = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};

@@ -1,20 +1,22 @@
-import { useState } from "react"
-import { CreditCard, Plus, Trash2, Wallet, X } from "lucide-react"
-import * as UI from "../../lib/ui"
-import { Button, Field, Select, Empty, useShop } from "../../components/shared"
+import { useState } from 'react';
+import { CreditCard, Plus, Trash2, Wallet, X } from 'lucide-react';
+import * as UI from '../../lib/ui';
+import { Button, Field, Select, Empty, useShop } from '../../components/shared';
 export const PaymentsPage = () => {
-  const { notify } = useShop()
-  const [methods, setMethods] = useState<{
-    id: string
-    type: string
-    phone: string
-    label: string
-    isDefault: boolean
-  }[]>([])
-  const [adding, setAdding] = useState(false)
-  const [type, setType] = useState("mvola")
-  const [phone, setPhone] = useState("")
-  const [label, setLabel] = useState("")
+  const { notify } = useShop();
+  const [methods, setMethods] = useState<
+    {
+      id: string;
+      type: string;
+      phone: string;
+      label: string;
+      isDefault: boolean;
+    }[]
+  >([]);
+  const [adding, setAdding] = useState(false);
+  const [type, setType] = useState('mvola');
+  const [phone, setPhone] = useState('');
+  const [label, setLabel] = useState('');
   return (
     <div className="settings-panel">
       <div className="panel-heading">
@@ -33,7 +35,7 @@ export const PaymentsPage = () => {
             <div>
               <strong>{m.label || m.type.toUpperCase()}</strong>
               <span>
-                {m.phone} {m.isDefault && "· Par défaut"}
+                {m.phone} {m.isDefault && '· Par défaut'}
               </span>
             </div>
             <UI.Button
@@ -66,7 +68,7 @@ export const PaymentsPage = () => {
             aria-label="Nouveau moyen de paiement"
             onClick={(e) => e.stopPropagation()}
             onSubmit={(e) => {
-              e.preventDefault()
+              e.preventDefault();
               setMethods((old) => [
                 ...old,
                 {
@@ -76,10 +78,10 @@ export const PaymentsPage = () => {
                   label,
                   isDefault: !old.length,
                 },
-              ])
-              setAdding(false)
-              setPhone("")
-              notify("Moyen de paiement ajouté en mode démo")
+              ]);
+              setAdding(false);
+              setPhone('');
+              notify('Moyen de paiement ajouté en mode démo');
             }}
           >
             <UI.Button
@@ -118,5 +120,5 @@ export const PaymentsPage = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};

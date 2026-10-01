@@ -1,7 +1,7 @@
-import * as UI from "../../lib/ui"
-import { Button, Select, useShop } from "../../components/shared"
+import * as UI from '../../lib/ui';
+import { Button, Select, useShop } from '../../components/shared';
 export const PrivacyPage = () => {
-  const { notify } = useShop()
+  const { notify } = useShop();
   return (
     <div className="settings-panel">
       <UI.H2>Confidentialité & données</UI.H2>
@@ -12,12 +12,12 @@ export const PrivacyPage = () => {
       </Select>
       {[
         [
-          "Partage de données",
-          "Autoriser le partage de données avec nos partenaires",
+          'Partage de données',
+          'Autoriser le partage de données avec nos partenaires',
         ],
-        ["Communications marketing", "Recevoir des nouvelles et offres"],
-        ["Analyse d'utilisation", "Aider à améliorer NovaMarket"],
-        ["Personnalisation", "Adapter les suggestions à vos intérêts"],
+        ['Communications marketing', 'Recevoir des nouvelles et offres'],
+        ["Analyse d'utilisation", 'Aider à améliorer NovaMarket'],
+        ['Personnalisation', 'Adapter les suggestions à vos intérêts'],
       ].map(([title, sub]) => (
         <label className="switch-row" key={title}>
           <span>
@@ -26,11 +26,11 @@ export const PrivacyPage = () => {
           </span>
           <UI.Input
             type="checkbox"
-            defaultChecked={title === "Personnalisation"}
+            defaultChecked={title === 'Personnalisation'}
           />
         </label>
       ))}
-      <Button onClick={() => notify("Choix enregistrés en mode démo")}>
+      <Button onClick={() => notify('Choix enregistrés en mode démo')}>
         Enregistrer mes choix
       </Button>
       <div className="export-box">
@@ -47,5 +47,5 @@ export const PrivacyPage = () => {
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};

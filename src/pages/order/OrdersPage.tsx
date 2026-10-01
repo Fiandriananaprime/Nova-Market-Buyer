@@ -1,12 +1,12 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import { ArrowRight, Package } from "lucide-react"
-import { date, money } from "../../lib/format"
-import { Button, PageTitle, Empty, useShop } from "../../components/shared"
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Package } from 'lucide-react';
+import { date, money } from '../../lib/format';
+import { Button, PageTitle, Empty, useShop } from '../../components/shared';
 export const OrdersPage = () => {
-  const { orders } = useShop()
-  const [filter, setFilter] = useState("all")
-  const visible = orders.filter((o) => filter === "all" || o.status === filter)
+  const { orders } = useShop();
+  const [filter, setFilter] = useState('all');
+  const visible = orders.filter((o) => filter === 'all' || o.status === filter);
   return (
     <div className="container page">
       <PageTitle
@@ -16,15 +16,15 @@ export const OrdersPage = () => {
       />
       <div className="pill-filters">
         {[
-          ["all", "Toutes"],
-          ["pending", "En attente"],
-          ["processing", "En cours"],
-          ["delivered", "Livrées"],
-          ["cancelled", "Annulées"],
+          ['all', 'Toutes'],
+          ['pending', 'En attente'],
+          ['processing', 'En cours'],
+          ['delivered', 'Livrées'],
+          ['cancelled', 'Annulées'],
         ].map(([v, label]) => (
           <Button
             key={v}
-            variant={filter === v ? "dark" : "outline"}
+            variant={filter === v ? 'dark' : 'outline'}
             onClick={() => setFilter(v)}
           >
             {label}
@@ -41,12 +41,12 @@ export const OrdersPage = () => {
                   <small>Commandée le {date(o.createdAt)}</small>
                 </span>
                 <span className="status-badge">
-                  {o.status === "processing"
-                    ? "En cours"
-                    : o.status === "pending"
-                      ? "En attente"
-                      : o.status === "delivered"
-                        ? "Livrée"
+                  {o.status === 'processing'
+                    ? 'En cours'
+                    : o.status === 'pending'
+                      ? 'En attente'
+                      : o.status === 'delivered'
+                        ? 'Livrée'
                         : o.status}
                 </span>
               </div>
@@ -57,9 +57,9 @@ export const OrdersPage = () => {
                   ))}
                 </div>
                 <span>
-                  {o.items.length} article{o.items.length > 1 ? "s" : ""}
+                  {o.items.length} article{o.items.length > 1 ? 's' : ''}
                   <small>
-                    {[...new Set(o.items.map((i) => i.sellerName))].join(" · ")}
+                    {[...new Set(o.items.map((i) => i.sellerName))].join(' · ')}
                   </small>
                 </span>
                 <strong>{money(o.total)}</strong>
@@ -77,5 +77,5 @@ export const OrdersPage = () => {
         />
       )}
     </div>
-  )
-}
+  );
+};

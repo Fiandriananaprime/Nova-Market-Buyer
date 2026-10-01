@@ -1,13 +1,13 @@
-import { Link, useNavigate, useParams } from "react-router-dom"
-import { ArrowLeft, ArrowRight, Check, MapPin, Wallet } from "lucide-react"
-import { date, money } from "../../lib/format"
-import * as UI from "../../lib/ui"
-import { Button, PageTitle, Empty, useShop } from "../../components/shared"
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { ArrowLeft, ArrowRight, Check, MapPin, Wallet } from 'lucide-react';
+import { date, money } from '../../lib/format';
+import * as UI from '../../lib/ui';
+import { Button, PageTitle, Empty, useShop } from '../../components/shared';
 export const OrderPage = () => {
-  const { id } = useParams()
-  const { orders, notify } = useShop()
-  const navigate = useNavigate()
-  const order = orders.find((o) => o.id === id)
+  const { id } = useParams();
+  const { orders, notify } = useShop();
+  const navigate = useNavigate();
+  const order = orders.find((o) => o.id === id);
   if (!order)
     return (
       <div className="container page">
@@ -18,24 +18,24 @@ export const OrderPage = () => {
           action="Voir mes commandes"
         />
       </div>
-    )
+    );
   const phases = [
-    "Commande passée",
-    "Confirmée",
-    "En préparation",
-    "En livraison",
-    "Livrée",
-  ]
+    'Commande passée',
+    'Confirmée',
+    'En préparation',
+    'En livraison',
+    'Livrée',
+  ];
   const current =
-    order.status === "pending"
+    order.status === 'pending'
       ? 0
-      : order.status === "confirmed"
+      : order.status === 'confirmed'
         ? 1
-        : order.status === "preparing"
+        : order.status === 'preparing'
           ? 2
-          : order.status === "processing"
+          : order.status === 'processing'
             ? 3
-            : 4
+            : 4;
   return (
     <div className="container page">
       <Link className="back-link" to="/orders">
@@ -47,10 +47,10 @@ export const OrderPage = () => {
         description={`Passée le ${date(order.createdAt)}`}
         action={
           <span className="status-badge">
-            {order.status === "processing"
-              ? "En cours de livraison"
-              : order.status === "pending"
-                ? "En attente"
+            {order.status === 'processing'
+              ? 'En cours de livraison'
+              : order.status === 'pending'
+                ? 'En attente'
                 : order.status}
           </span>
         }
@@ -66,14 +66,17 @@ export const OrderPage = () => {
             </div>
             <div className="timeline">
               {phases.map((phase, i) => (
-                <div className={i <= current ? "complete" : ""} key={phase}>
+                <div className={i <= current ? 'complete' : ''} key={phase}>
                   <span>{i <= current ? <Check size={14} /> : i + 1}</span>
                   <strong>{phase}</strong>
                 </div>
               ))}
             </div>
             <p className="muted">
-              Livraison estimée le {order.estimatedDelivery ? date(order.estimatedDelivery) : "à confirmer"}
+              Livraison estimée le{' '}
+              {order.estimatedDelivery
+                ? date(order.estimatedDelivery)
+                : 'à confirmer'}
             </p>
           </div>
           <div className="panel">
@@ -138,13 +141,13 @@ export const OrderPage = () => {
           >
             Suivre ma livraison <ArrowRight size={17} />
           </Link>
-          {order.status === "pending" && (
+          {order.status === 'pending' && (
             <Button
               variant="ghost"
               className="w-full"
               onClick={() => {
-                notify("Annulation disponible une fois l'API connectée")
-                navigate("/orders")
+                notify("Annulation disponible une fois l'API connectée");
+                navigate('/orders');
               }}
             >
               Annuler la commande
@@ -153,5 +156,5 @@ export const OrderPage = () => {
         </aside>
       </div>
     </div>
-  )
-}
+  );
+};

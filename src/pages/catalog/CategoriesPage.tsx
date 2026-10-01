@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom"
-import { ArrowRight } from "lucide-react"
-import { PageTitle, useShop } from "../../components/shared"
-import { imageUrl } from "../../lib/format"
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
+import { PageTitle, useShop } from '../../components/shared';
+import { imageUrl } from '../../lib/format';
 export const CategoriesPage = () => {
-  const { categories } = useShop()
+  const { categories } = useShop();
   return (
     <div className="container page">
       <PageTitle
@@ -38,5 +38,5 @@ export const CategoriesPage = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};

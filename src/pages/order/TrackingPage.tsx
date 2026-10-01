@@ -1,12 +1,12 @@
-import { Link, useParams } from "react-router-dom"
-import { ArrowLeft, Clock3, MapPin, Minus, Plus, Truck } from "lucide-react"
-import { date } from "../../lib/format"
-import * as UI from "../../lib/ui"
-import { PageTitle, Empty, useShop } from "../../components/shared"
+import { Link, useParams } from 'react-router-dom';
+import { ArrowLeft, Clock3, MapPin, Minus, Plus, Truck } from 'lucide-react';
+import { date } from '../../lib/format';
+import * as UI from '../../lib/ui';
+import { PageTitle, Empty, useShop } from '../../components/shared';
 export const TrackingPage = () => {
-  const { id } = useParams()
-  const { orders } = useShop()
-  const order = orders.find((o) => o.id === id)
+  const { id } = useParams();
+  const { orders } = useShop();
+  const order = orders.find((o) => o.id === id);
   if (!order)
     return (
       <div className="container page">
@@ -16,7 +16,7 @@ export const TrackingPage = () => {
           to="/orders"
         />
       </div>
-    )
+    );
   return (
     <div className="container page tracking-page">
       <Link className="back-link" to={`/orders/${id}`}>
@@ -25,7 +25,7 @@ export const TrackingPage = () => {
       <PageTitle
         eyebrow="SUIVI DE LIVRAISON"
         title="Votre commande est en chemin"
-        description={`Commande ${id} · Arrivée estimée le ${order.estimatedDelivery ? date(order.estimatedDelivery) : "à confirmer"}`}
+        description={`Commande ${id} · Arrivée estimée le ${order.estimatedDelivery ? date(order.estimatedDelivery) : 'à confirmer'}`}
       />
       <div className="tracking-layout">
         <div
@@ -85,11 +85,11 @@ export const TrackingPage = () => {
             </div>
             <span className="eyebrow">ÉTAT ACTUEL</span>
             <UI.H2>
-              {order.status === "pending"
-                ? "Commande reçue"
-                : order.status === "delivered"
-                  ? "Commande livrée"
-                  : "En cours de livraison"}
+              {order.status === 'pending'
+                ? 'Commande reçue'
+                : order.status === 'delivered'
+                  ? 'Commande livrée'
+                  : 'En cours de livraison'}
             </UI.H2>
             <p>
               Votre commande poursuit son chemin. Revenez ici pour suivre son
@@ -98,18 +98,23 @@ export const TrackingPage = () => {
             <div className="eta">
               <Clock3 size={19} />
               <span>
-                Arrivée estimée <strong>{order.estimatedDelivery ? date(order.estimatedDelivery) : "à confirmer"}</strong>
+                Arrivée estimée{' '}
+                <strong>
+                  {order.estimatedDelivery
+                    ? date(order.estimatedDelivery)
+                    : 'à confirmer'}
+                </strong>
               </span>
             </div>
           </div>
           <div className="tracking-events">
             <UI.H3>Étapes de livraison</UI.H3>
             {[
-              ["Commande confirmée", "Votre commande a bien été enregistrée"],
-              ["Préparation", "Les boutiques préparent vos articles"],
-              ["Livraison", "En route vers votre adresse"],
+              ['Commande confirmée', 'Votre commande a bien été enregistrée'],
+              ['Préparation', 'Les boutiques préparent vos articles'],
+              ['Livraison', 'En route vers votre adresse'],
             ].map(([title, sub], i) => (
-              <div key={title} className={i <= 1 ? "done" : ""}>
+              <div key={title} className={i <= 1 ? 'done' : ''}>
                 <span className="event-dot" />
                 <div>
                   <strong>{title}</strong>
@@ -128,5 +133,5 @@ export const TrackingPage = () => {
         </aside>
       </div>
     </div>
-  )
-}
+  );
+};
